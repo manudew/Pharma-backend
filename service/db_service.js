@@ -4,6 +4,7 @@ const conn = mysql.createConnection({
     user: "root",
     password: "root",
     database: "pharma_db",
+    port: 3308
 });
 
 conn.connect();

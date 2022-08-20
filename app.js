@@ -1,18 +1,23 @@
 const express = require('express');
-const router = require('./routes')
+const signupRoute = require('./routes/signupRoute');
+// const cors = require('cors');
+const bodyparser = require('body-parser');
+
+
 
 const app = express();
 
 app.use(express.json());
 
-app.use("./router",router);
+app.use("/Signup",signupRoute);
 
-app.get("/",( req,res) =>{
-    console.log(req.body);
-    res.status(200).json({
-        data: req.body
-    })
-})
+
+// app.get("/",( req,res) =>{
+//     console.log(req.body);
+//     res.status(200).json({
+//         data: req.body
+//     })
+// })
 
 const PORT = 3000;
 
