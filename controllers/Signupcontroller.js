@@ -3,7 +3,7 @@ const { isEmpty } = require('../utils/is_empty');
 const Joi = require('@hapi/joi');
 const JWT = require('jsonwebtoken');
 const conn = require('../service/db_service');
-const { CHECK_EMAIL, REGISTER_DELIVERY_AGENT, REGISTER_ADMIN, REGISTER_CUSTOMER, VERIFY_OTP,SET_VERIFY } = require('../query/signUp');
+const { CHECK_EMAIL, REGISTER_DELIVERY_AGENT, REGISTER_ADMIN, REGISTER_CUSTOMER, VERIFY_OTP,SET_VERIFY, GET_VERIFIED_USER } = require('../query/signUp');
 const { SIGNUP_MODEL, SIGNIN_MODEL } = require('../models/signUp');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -20,14 +20,14 @@ exports.User_SignIn = (req, res, next) => {
     try {
         const { error } = SIGNIN_MODEL.validate(req.body);
         if (error) return next(new AppError(error.details[0].message, 400));
-        conn.query(CHECK_EMAIL, [req.body.email], async (err, data, feilds) => {
+        conn.query(GET_VERIFIED_USER, [req.body.email], async (err, data, feilds) => {
             if (err) return next(new AppError(err, 500));
             if (!data.length) return next(new AppError("Email or Password Invalid!", 401));
 
             const isMatched = await bcrypt.compare(req.body.password, data[0].password);
             if (!isMatched) return next(new AppError("Email or Password Invalid!", 401));
 
-            const token = JWT.sign({ User_name: data[0].email, User_ID: data[0].uid }, "ucscucscucsc", { expiresIn: "1d" });
+            const token = JWT.sign({ User_name: data[0].email, User_ID: data[0].uid ,User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
 
             res.header("auth-token", token).status(200).json({
                 token: token,
@@ -61,7 +61,10 @@ exports.User_SignUp = (req, res, next) => {
         conn.query(CHECK_EMAIL, [req.body.email], async (err, data, feilds) => {
            
             if (err) return next(new AppError(err, 500));
-            if (data.length) return next(new AppError("Email already taken!", 400));
+            if (data.length) return next(res.status(200).json({
+                email_error : "Email has been taken..!"
+
+            }));
 
 
 
@@ -70,14 +73,14 @@ exports.User_SignUp = (req, res, next) => {
             const hashedValue = await bcrypt.hash(req.body.password, salt);
             const email_token = crypto.randomBytes(64).toString('hex');
 
-            if (req.body.user_type == 'customer') {
+            if (req.body.user_type == 'Customer') {
                 console.log(req.body.email);
 
                 conn.query(REGISTER_CUSTOMER, [[req.body.username,req.body.email, hashedValue, req.body.contact_number,null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email,res,next);
-                    res.status(201).json({
-                        data: "User Registration Success!"
+                    res.status(200).json({
+                        success: true
                     })
                 })
             }
@@ -87,19 +90,21 @@ exports.User_SignUp = (req, res, next) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email,res,next);
 
-                    res.status(201).json({
-                        data: "User Registration Success!"
-                    })
+                    res.status(200).send(
+                        json({
+                            success: true
+                        })
+                    )
                 })
             }
 
-            else if (req.body.user_type == 'delivery_agent') {
+            else if (req.body.user_type == 'Delivery agent') {
                 conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username,req.body.email, hashedValue, req.body.contact_number,null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email,res,next);
 
-                    res.status(201).json({
-                        data: "User Registration Success!"
+                    res.status(200).json({
+                        success: true
                     })
                 })
             }
@@ -109,8 +114,8 @@ exports.User_SignUp = (req, res, next) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email,res,next);
 
-                    res.status(201).json({
-                        data: "User Registration Success!"
+                    res.status(200).json({
+                        success: true
                     })
                 })
             }
