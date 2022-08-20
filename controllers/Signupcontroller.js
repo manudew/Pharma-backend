@@ -83,7 +83,7 @@ exports.User_SignUp = (req, res, next) => {
             }
 
             else if (req.body.user_type == 'pharmacy') {
-                conn.query(REGISTER_PHARMACY, [[hashedValue, req.email, req.username, req.telephone,null, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_PHARMACY, [[req.body.username, req.body.email, hashedValue, req.telephone, null, req.body.regNo, req.body.accNo, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email,res,next);
 
