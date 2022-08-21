@@ -1,9 +1,8 @@
-
 const { isEmpty } = require('../utils/is_empty');
 const Joi = require('@hapi/joi');
 const JWT = require('jsonwebtoken');
 const conn = require('../service/db_service');
-const { CHECK_EMAIL, REGISTER_DELIVERY_AGENT, REGISTER_ADMIN, REGISTER_CUSTOMER, VERIFY_OTP,SET_VERIFY, GET_VERIFIED_USER } = require('../query/signUp');
+const { CHECK_EMAIL, REGISTER_DELIVERY_AGENT, REGISTER_ADMIN, REGISTER_CUSTOMER, REGISTER_PHARMACY, VERIFY_OTP,SET_VERIFY, GET_VERIFIED_USER } = require('../query/signUp');
 const { SIGNUP_MODEL, SIGNIN_MODEL } = require('../models/signUp');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -12,7 +11,6 @@ const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const CLIENT_URL = "http://localhost:3000/";
-
 
 exports.User_SignIn = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
@@ -33,7 +31,6 @@ exports.User_SignIn = (req, res, next) => {
                 token: token,
                 data: "Login successfull ..!"
             })
-
         })
     }
     catch (err) {
@@ -41,7 +38,6 @@ exports.User_SignIn = (req, res, next) => {
             error: err
         })
     }
-
 }
 
 exports.User_SignUp = (req, res, next) => {
@@ -53,7 +49,7 @@ exports.User_SignUp = (req, res, next) => {
 
     try {
 
-        console.log(req.body);
+        //console.log(req.body);
         const { error } = SIGNUP_MODEL.validate(req);
 
         // if (error) return next(new AppError(error.details[0].message, 400));
@@ -65,8 +61,6 @@ exports.User_SignUp = (req, res, next) => {
                 email_error : "Email has been taken..!"
 
             }));
-
-
 
             const salt = await bcrypt.genSalt(10);
             const otp = Math.floor(100000000 + Math.random() * 900000000);
@@ -86,15 +80,14 @@ exports.User_SignUp = (req, res, next) => {
             }
 
             else if (req.body.user_type == 'pharmacy') {
-                conn.query(REGISTER_PHARMACY, [[req.body.username, req.body.email, hashedValue, req.body.telephone, null, req.body.regNo, req.body.accNo, otp]], (err, data, feilds) => {
+                
+                conn.query(REGISTER_PHARMACY, [[req.body.username, req.body.email, hashedValue, req.body.telephone, null, req.body.regNo, null, req.body.accNo, null, null, 1, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email,res,next);
 
-                    res.status(200).send(
-                        json({
-                            success: true
-                        })
-                    )
+                    res.status(200).json({
+                        success: true
+                    })
                 })
             }
 
@@ -119,10 +112,6 @@ exports.User_SignUp = (req, res, next) => {
                     })
                 })
             }
-
-
-
-
         })
     }
     catch (err) {
@@ -137,7 +126,7 @@ exports.sendEmailVerification = (email, res, next) => {
     console.log(email);
     try {
         conn.query(CHECK_EMAIL, [email], async (err, data, feilds) => {
-            console.log(data[0].otp);
+            //console.log(data[0].otp);
             if (data.length) {
                 var transporter = nodemailer.createTransport({
                     service: 'gmail',
