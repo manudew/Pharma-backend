@@ -2,9 +2,9 @@ const mysql = require('mysql');
 const conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "",
     database: "pharma_db",
-    port: 3308
+    port: 3306
 });
 
 conn.connect();
