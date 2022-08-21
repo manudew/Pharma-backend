@@ -10,7 +10,7 @@ const nodemailer = require('nodemailer');
 const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const CLIENT_URL = "http://localhost:3000/";
+
 
 exports.User_SignIn = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
@@ -20,16 +20,23 @@ exports.User_SignIn = (req, res, next) => {
         if (error) return next(new AppError(error.details[0].message, 400));
         conn.query(GET_VERIFIED_USER, [req.body.email], async (err, data, feilds) => {
             if (err) return next(new AppError(err, 500));
-            if (!data.length) return next(new AppError("Email or Password Invalid!", 401));
+            console.log(data);
+            if (!data.length) return next(res.status(200).json({
+                success : false
+            }));
 
             const isMatched = await bcrypt.compare(req.body.password, data[0].password);
-            //if (!isMatched) return next(new AppError("Email or Password Invalid!", 401));
+
+            if (!isMatched) return next(res.status(201).json({
+                success : false
+            }));
+
 
             const token = JWT.sign({ User_name: data[0].email, User_ID: data[0].uid ,User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
 
             res.header("auth-token", token).status(200).json({
                 token: token,
-                data: "Login successfull ..!"
+                success: true
             })
         })
     }
@@ -58,7 +65,7 @@ exports.User_SignUp = (req, res, next) => {
            
             if (err) return next(new AppError(err, 500));
             if (data.length) return next(res.status(200).json({
-                email_error : "Email has been taken..!"
+                success : false
 
             }));
 
@@ -74,7 +81,8 @@ exports.User_SignUp = (req, res, next) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email,res,next);
                     res.status(200).json({
-                        success: true
+                        success: true,
+                        email: req.body.email
                     })
                 })
             }
@@ -85,9 +93,12 @@ exports.User_SignUp = (req, res, next) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email,res,next);
 
-                    res.status(200).json({
-                        success: true
-                    })
+                    res.status(200).send(
+                        json({
+                            success: true,
+                            email: req.body.email
+                        })
+                    )
                 })
             }
 
@@ -97,7 +108,8 @@ exports.User_SignUp = (req, res, next) => {
                     this.sendEmailVerification(req.body.email,res,next);
 
                     res.status(200).json({
-                        success: true
+                        success: true,
+                        email: req.body.email
                     })
                 })
             }
@@ -108,7 +120,8 @@ exports.User_SignUp = (req, res, next) => {
                     this.sendEmailVerification(req.body.email,res,next);
 
                     res.status(200).json({
-                        success: true
+                        success: true,
+                        email: req.body.email
                     })
                 })
             }
@@ -231,21 +244,22 @@ exports.sendEmailVerification = (email, res, next) => {
 
 exports.Verification = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
-
+    console.log(req.body);
     try {
-        conn.query(VERIFY_OTP,[[req.body.email],[req.body.otp]], async (err, data, feilds) => {
+        conn.query(VERIFY_OTP,[req.body.otp], async (err, data, feilds) => {
             console.log(data);
             if (!data.length){
-                return next(new AppError("Wrong OTP!", 400));
-                
+                res.status(201).json({
+                    success: false
+                });     
             }
             else{
                 
-                conn.query(SET_VERIFY, [[req.body.email],[req.body.otp]], (err, data, feilds) => {
+                conn.query(SET_VERIFY, [req.body.otp], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
         
                     res.status(201).json({
-                        data: "Verification Success!"
+                        success: true
                     })
                 })
     
