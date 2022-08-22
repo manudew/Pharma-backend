@@ -231,21 +231,22 @@ exports.sendEmailVerification = (email, res, next) => {
 
 exports.Verification = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
-
+    console.log(req.body);
     try {
-        conn.query(VERIFY_OTP,[[req.body.email],[req.body.otp]], async (err, data, feilds) => {
+        conn.query(VERIFY_OTP,[req.body.otp], async (err, data, feilds) => {
             console.log(data);
             if (!data.length){
-                return next(new AppError("Wrong OTP!", 400));
-                
+                res.status(201).json({
+                    success: false
+                });     
             }
             else{
                 
-                conn.query(SET_VERIFY, [[req.body.email],[req.body.otp]], (err, data, feilds) => {
+                conn.query(SET_VERIFY, [req.body.otp], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
         
                     res.status(201).json({
-                        data: "Verification Success!"
+                        success: true
                     })
                 })
     
