@@ -6,4 +6,3 @@ exports.REGISTER_DELIVERY_AGENT = "INSERT INTO delivery_agent VALUES (NULL, ?)";
 exports.REGISTER_ADMIN = "INSERT INTO admin VALUES (NULL, ?)";
 exports.VERIFY_OTP = "SELECT * FROM login WHERE otp = ?";
 exports.SET_VERIFY =  "UPDATE login SET verify = 1 WHERE  otp = ?";
-
