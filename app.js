@@ -5,13 +5,13 @@ const bodyparser = require('body-parser');
 
 
 
+
 const app = express();
 app.use(cors());
 
 app.use(express.json());
 
 app.use("/Signup",signupRoute);
-
 
 // app.get("/",( req,res) =>{
 //     console.log(req.body);
@@ -20,7 +20,7 @@ app.use("/Signup",signupRoute);
 //     })
 // })
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, () => {
     console.log(" Server running on port " + PORT);
