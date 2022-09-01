@@ -1,5 +1,6 @@
 const express = require('express');
 const signupRoute = require('./routes/signupRoute');
+const parmacyHomeRoute = require('./routes/parmacyHomeRoute');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/Signup",signupRoute);
+app.use("/PharmacyHome",parmacyHomeRoute);
 
 // app.get("/",( req,res) =>{
 //     console.log(req.body);

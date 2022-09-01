@@ -1,0 +1,1 @@
+exports.GET_DATA_PHARMACY = "SELECT * FROM pharmacy WHERE uid =?";
