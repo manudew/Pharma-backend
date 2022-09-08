@@ -12,6 +12,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 
+
 exports.User_SignIn = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
     console.log(req.body)
@@ -20,14 +21,14 @@ exports.User_SignIn = (req, res, next) => {
         const { error } = SIGNIN_MODEL.validate(req.body);
         if (error) return next(new AppError(error.details[0].message, 400));
         conn.query(GET_VERIFIED_USER, [req.body.email], async (err, data, feilds) => {
-            if (err) return next(new AppError(err, 500));
             console.log(data);
+            if (err) return next(new AppError(err, 500));
+
             if (!data.length) return next(res.status(200).json({
                 success: false
             }));
 
             const isMatched = await bcrypt.compare(req.body.password, data[0].password);
-
             if (!isMatched) return next(res.status(201).json({
                 success: false
             }));
@@ -35,9 +36,13 @@ exports.User_SignIn = (req, res, next) => {
                 const token = JWT.sign({ User_name: data[0].username, User_email: data[0].email, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
                 res.header("auth-token", token).status(200).json({
 
-                    token: token,
-                    success: true
-                })
+
+            const token = JWT.sign({ User_name: data[0].email, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
+
+            res.header("auth-token", token).status(200).json({
+                token: token,
+                success: true
+            })
         })
     }
     catch (err) {
@@ -56,7 +61,7 @@ exports.User_SignUp = (req, res, next) => {
 
     try {
 
-        //console.log(req.body);
+        console.log(req.body);
         const { error } = SIGNUP_MODEL.validate(req);
 
         // if (error) return next(new AppError(error.details[0].message, 400));
@@ -65,24 +70,24 @@ exports.User_SignUp = (req, res, next) => {
 
             if (err) return next(new AppError(err, 500));
             if (data.length) return next(res.status(200).json({
-                success: false
 
+                success: false,
+                data : data
             }));
 
             const salt = await bcrypt.genSalt(10);
-            const otp = Math.floor(100000000 + Math.random() * 900000000);
+            const otp = Math.floor(100000 + Math.random() * 900000);
             const hashedValue = await bcrypt.hash(req.body.password, salt);
             const email_token = crypto.randomBytes(64).toString('hex');
 
-            if (req.body.user_type == 'Customer') {
-                console.log(req.body.email);
+            if (req.body.user_type == 'Customer') {   
 
                 conn.query(REGISTER_CUSTOMER, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     this.sendEmailVerification(req.body.email, res, next);
                     res.status(200).json({
                         success: true,
-                        email: req.body.email
+                        email: req.body.email,
                     })
                 })
             }
@@ -97,6 +102,7 @@ exports.User_SignUp = (req, res, next) => {
                         success: true,
                         email: req.body.email
                     })
+
                 })
             }
 

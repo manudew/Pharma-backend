@@ -17,5 +17,5 @@ exports.SIGNUP_MODEL = Joi.object({
 
  exports.SIGNIN_MODEL = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(6).required()
+    password: Joi.string().min(8).required()
  })
