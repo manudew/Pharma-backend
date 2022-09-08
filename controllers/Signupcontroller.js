@@ -2,7 +2,7 @@ const { isEmpty } = require('../utils/is_empty');
 const Joi = require('@hapi/joi');
 const JWT = require('jsonwebtoken');
 const conn = require('../service/db_service');
-const { CHECK_EMAIL, REGISTER_DELIVERY_AGENT, REGISTER_ADMIN, REGISTER_CUSTOMER, REGISTER_PHARMACY, VERIFY_OTP,SET_VERIFY, GET_VERIFIED_USER } = require('../query/signUp');
+const { CHECK_EMAIL, REGISTER_DELIVERY_AGENT, REGISTER_ADMIN, REGISTER_CUSTOMER, REGISTER_PHARMACY, VERIFY_OTP, SET_VERIFY, GET_VERIFIED_USER } = require('../query/signUp');
 const { SIGNUP_MODEL, SIGNIN_MODEL } = require('../models/signUp');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -12,6 +12,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 
+
 exports.User_SignIn = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
     console.log(req.body)
@@ -19,20 +20,20 @@ exports.User_SignIn = (req, res, next) => {
         const { error } = SIGNIN_MODEL.validate(req.body);
         if (error) return next(new AppError(error.details[0].message, 400));
         conn.query(GET_VERIFIED_USER, [req.body.email], async (err, data, feilds) => {
-            if (err) return next(new AppError(err, 500));
             console.log(data);
+            if (err) return next(new AppError(err, 500));
+
             if (!data.length) return next(res.status(200).json({
-                success : false
+                success: false
             }));
 
             const isMatched = await bcrypt.compare(req.body.password, data[0].password);
-
             if (!isMatched) return next(res.status(201).json({
-                success : false
+                success: false
             }));
 
 
-            const token = JWT.sign({ User_name: data[0].email, User_ID: data[0].uid ,User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
+            const token = JWT.sign({ User_name: data[0].email, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
 
             res.header("auth-token", token).status(200).json({
                 token: token,
@@ -56,42 +57,42 @@ exports.User_SignUp = (req, res, next) => {
 
     try {
 
-        //console.log(req.body);
+        console.log(req.body);
         const { error } = SIGNUP_MODEL.validate(req);
 
         // if (error) return next(new AppError(error.details[0].message, 400));
 
         conn.query(CHECK_EMAIL, [req.body.email], async (err, data, feilds) => {
-           
+
             if (err) return next(new AppError(err, 500));
             if (data.length) return next(res.status(200).json({
-                success : false
-
+                success: false,
+                data : data
             }));
 
             const salt = await bcrypt.genSalt(10);
-            const otp = Math.floor(100000000 + Math.random() * 900000000);
+            const otp = Math.floor(100000 + Math.random() * 900000);
             const hashedValue = await bcrypt.hash(req.body.password, salt);
             const email_token = crypto.randomBytes(64).toString('hex');
 
             if (req.body.user_type == 'Customer') {
-                console.log(req.body.email);
+                
 
-                conn.query(REGISTER_CUSTOMER, [[req.body.username,req.body.email, hashedValue, req.body.contact_number,null, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_CUSTOMER, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-                    this.sendEmailVerification(req.body.email,res,next);
+                    this.sendEmailVerification(req.body.email, res, next);
                     res.status(200).json({
                         success: true,
-                        email: req.body.email
+                        email: req.body.email,
                     })
                 })
             }
 
             else if (req.body.user_type == 'pharmacy') {
-                
+
                 conn.query(REGISTER_PHARMACY, [[req.body.username, req.body.email, hashedValue, req.body.telephone, null, req.body.regNo, null, req.body.accNo, null, null, 1, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-                    this.sendEmailVerification(req.body.email,res,next);
+                    this.sendEmailVerification(req.body.email, res, next);
 
                     res.status(200).send(
                         json({
@@ -103,9 +104,9 @@ exports.User_SignUp = (req, res, next) => {
             }
 
             else if (req.body.user_type == 'Delivery agent') {
-                conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username,req.body.email, hashedValue, req.body.contact_number,null, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-                    this.sendEmailVerification(req.body.email,res,next);
+                    this.sendEmailVerification(req.body.email, res, next);
 
                     res.status(200).json({
                         success: true,
@@ -117,7 +118,7 @@ exports.User_SignUp = (req, res, next) => {
             else if (req.body.user_type == 'admin') {
                 conn.query(REGISTER_ADMIN, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-                    this.sendEmailVerification(req.body.email,res,next);
+                    this.sendEmailVerification(req.body.email, res, next);
 
                     res.status(200).json({
                         success: true,
@@ -195,7 +196,7 @@ exports.sendEmailVerification = (email, res, next) => {
               
                             <p>Thank you for signing up. Here is your verification OTP:</p>
               
-                            <h2>`+ data[0].otp+`<h2>
+                            <h2>`+ data[0].otp + `<h2>
               
                             <p>
                               If you are having any issues with your account, please don’t hesitate to contact us by replying to
@@ -246,25 +247,25 @@ exports.Verification = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
     console.log(req.body);
     try {
-        conn.query(VERIFY_OTP,[req.body.otp], async (err, data, feilds) => {
+        conn.query(VERIFY_OTP, [req.body.otp], async (err, data, feilds) => {
             console.log(data);
-            if (!data.length){
+            if (!data.length) {
                 res.status(201).json({
                     success: false
-                });     
+                });
             }
-            else{
-                
+            else {
+
                 conn.query(SET_VERIFY, [req.body.otp], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-        
+
                     res.status(201).json({
                         success: true
                     })
                 })
-    
-            }         
-        })     
+
+            }
+        })
     }
     catch (err) {
         res.status(500).json({
