@@ -4,6 +4,7 @@ exports.SIGNUP_MODEL = Joi.object({
    //  User_ID: Joi.string(),
     username: Joi.string().required(),
     email: Joi.string().email().required(),
+    address: Joi.string().required(),
     password: Joi.string().min(6).required(),
     user_type: Joi.string().required(),
     telephone: Joi.number().max(10).required()
