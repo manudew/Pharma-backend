@@ -1,6 +1,13 @@
 const express = require('express');
 
 
+
+const parmacyOrderRoute =require('./routes/parmacyOrderRoute');
+
+
+
+
+
 const cors = require('cors');
 const bodyparser = require('body-parser');
 
@@ -20,6 +27,7 @@ app.use("/User",userRoute);
 app.use("/Customer",customerRoute);
 app.use("/PharmacyHome",parmacyHomeRoute);
 app.use("/DeliveryAgent",deliveryAgentRoute);
+app.use("/PharmacyOrder",parmacyOrderRoute);
 
 
 

@@ -34,6 +34,7 @@ exports.User_SignIn = (req, res, next) => {
             }));
 
             const token = JWT.sign({ User_name: data[0].username, User_email: data[0].email, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
+
             res.header("auth-token", token).status(200).json({
                 token: token,
                 success: true
