@@ -1,0 +1,1 @@
+exports.GET_DELIVERY_AGENT_DETAILS =  "SELECT * FROM login INNER JOIN delivery_agent ON login.uid= ? AND login.verify = 1 AND login.uid = pharmacy.uid";
