@@ -1,0 +1,1 @@
+exports.GET_CUSTOMER_DETAILS =  "SELECT * FROM login WHERE uid= ? AND verify = 1";

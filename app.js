@@ -1,12 +1,20 @@
 const express = require('express');
-const signupRoute = require('./routes/signupRoute');
-const parmacyHomeRoute = require('./routes/parmacyHomeRoute');
+
+
+
 const parmacyOrderRoute =require('./routes/parmacyOrderRoute');
+
+
+
+
+
 const cors = require('cors');
 const bodyparser = require('body-parser');
 
-
-
+const signupRoute = require('./routes/signupRoute');
+const userRoute = require("./routes/userRoute");
+const customerRoute = require("./routes/customerRoute");
+const parmacyHomeRoute = require('./routes/parmacyHomeRoute');
 
 const app = express();
 app.use(cors());
@@ -14,16 +22,13 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/Signup",signupRoute);
+app.use("/User",userRoute);
+app.use("/Customer",customerRoute);
 app.use("/PharmacyHome",parmacyHomeRoute);
 app.use("/PharmacyOrder",parmacyOrderRoute);
 
 
-// app.get("/",( req,res) =>{
-//     console.log(req.body);
-//     res.status(200).json({
-//         data: req.body
-//     })
-// })
+
 
 const PORT = 3000;
 
