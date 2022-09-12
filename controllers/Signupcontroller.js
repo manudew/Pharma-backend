@@ -17,7 +17,7 @@ exports.User_SignIn = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
     console.log(req.body)
     try {
-        success= "";
+        success = "";
         const { error } = SIGNIN_MODEL.validate(req.body);
         if (error) return next(new AppError(error.details[0].message, 400));
         conn.query(GET_VERIFIED_USER, [req.body.email], async (err, data, feilds) => {
@@ -33,12 +33,7 @@ exports.User_SignIn = (req, res, next) => {
                 success: false
             }));
 
-                const token = JWT.sign({ User_name: data[0].username, User_email: data[0].email, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
-                res.header("auth-token", token).status(200).json({
-
-
-            const token = JWT.sign({ User_name: data[0].email, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
-
+            const token = JWT.sign({ User_name: data[0].username, User_email: data[0].email, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
             res.header("auth-token", token).status(200).json({
                 token: token,
                 success: true
@@ -72,7 +67,7 @@ exports.User_SignUp = (req, res, next) => {
             if (data.length) return next(res.status(200).json({
 
                 success: false,
-                data : data
+                data: data
             }));
 
             const salt = await bcrypt.genSalt(10);
@@ -80,7 +75,7 @@ exports.User_SignUp = (req, res, next) => {
             const hashedValue = await bcrypt.hash(req.body.password, salt);
             const email_token = crypto.randomBytes(64).toString('hex');
 
-            if (req.body.user_type == 'Customer') {   
+            if (req.body.user_type == 'Customer') {
 
                 conn.query(REGISTER_CUSTOMER, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
