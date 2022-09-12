@@ -1,1 +1,1 @@
-exports.GET_CUSTOMER_DETAILS =  "SELECT * FROM login WHERE uid= ? AND verify = 1";
+exports.GET_CUSTOMER_DETAILS =  "SELECT * FROM login INNER JOIN customer ON login.uid= ? AND login.verify = 1 AND login.uid =customer.uid";
