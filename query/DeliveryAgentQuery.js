@@ -1,0 +1,5 @@
+// exports.GET_CONFIRMED_ORDERS_DETAILS =  "SELECT * FROM orders WHERE delivery_agent_id= ? AND status='delivery'";
+
+exports.GET_CONFIRMED_ORDERS_DETAILS =  ("CREATE VIEW confirmedOrderDetails AS SELECT order_id, c.username AS customer, p.username AS pharmacy, a.address, c.contact_number FROM orders a, customer c, pharmacy p WHERE (a.customer_id=c.uid AND a.pharmacy_id=p.uid AND a.delivery_agent_id=? AND a.status='delivery')", "SELECT * FROM confirmedOrderDetails")
+
+exports.GET_COMPLETED_ORDERS_DETAILS = ("CREATE VIEW completedOrderDetails AS SELECT order_id, c.username AS customer, p.username AS pharmacy, a.address, c.contact_number FROM orders a, customer c, pharmacy p WHERE (a.customer_id=c.uid AND a.pharmacy_id=p.uid AND a.delivery_agent_id=? AND a.status='completed')", "SELECT * FROM completedOrderDetails")

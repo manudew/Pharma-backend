@@ -5,6 +5,10 @@ const conn = require('../service/db_service');
 const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+
+const { GET_PHARMACY_MODEL } = require('../models/UserModel');
+const { GET_VEIRIFIED_PHARMACIES } = require("../query/UserQuery");
+const { GET_ORDER_PLACED_PHRMACIES } = require("../query/UserQuery");
 const { UPDATE_USERNAME_MODEL, UPDATE_TELEPHONE_MODEL, UPDATE_EMAIL_MODEL, UPDATE_PASSWORD_MODEL } = require('../models/UserModel');
 const { GET_VEIRIFIED_PHARMACIES, UPDATE_CUSTOMER_USERNAME, UPDATE_DELIVERYAGENT_USERNAME, UPDATE_ADMIN_USERNAME, UPDATE_PHARMACY_USERNAME, UPDATE_CUSTOMER_TELEPHONE, UPDATE_DELIVERYAGENT_TELEPHONE, UPDATE_PHARMACY_TELEPHONE, UPDATE_ADMIN_TELEPHONE, UPDATE_CUSTOMER_EMAIL, UPDATE_DELIVERYAGENT_EMAIL, UPDATE_PHARMACY_EMAIL, UPDATE_ADMIN_EMAIL, GET_VERIFIED_USER_BY_UID, UPDATE_PASSWORD } = require("../query/UserQuery");
 const { GET_VERIFIED_USER } = require('../query/signUp');
@@ -15,11 +19,32 @@ const { GET_ADMIN_DETAILS } = require("../query/AdminQuery");
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
-
 exports.getPharmacies = (req, res, next) => {
 
     try {
         conn.query(GET_VEIRIFIED_PHARMACIES, [], async (err, data, feilds) => {
+            console.log(data);
+            if (!data.length) {
+                res.status(200).send({
+                    result: "No records"
+                })
+            }
+            else {
+                res.header().status(200).send(data);
+            }
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
+}
+
+exports.getOrderPlacedPharmacies = (req, res, next) => {
+
+    try {
+        conn.query(GET_ORDER_PLACED_PHRMACIES, [], async (err, data, feilds) => {
             console.log(data);
             if (!data.length) {
                 res.status(200).send({
@@ -235,7 +260,6 @@ exports.updatePassword = (req, res, next) => {
             });
 
         })
-
     }
     catch (err) {
         res.status(500).json({
