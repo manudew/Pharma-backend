@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const { GET_CONFIRMED_ORDERS_DETAILS } = require("../query/DeliveryAgentQuery");
 const { GET_COMPLETED_ORDERS_DETAILS } = require("../query/DeliveryAgentQuery");
 const { GET_DELIVERY_AGENT_DETAILS } = require("../query/DeliveryAgentQuery");
+const { UPDATE_COMPLETED_ORDER } = require("../query/DeliveryAgentQuery");
 const { GET_DELIVERY_AGENT_MODEL } = require("../models/DeliveryAgentModel");
 
 exports.getConfirmedOrdersDetails = (req, res, next) => {
@@ -67,6 +68,29 @@ exports.getDeliveryAgentDetails = (req, res, next) => {
                 })
             }
             else{
+                res.header().status(200).send(data);
+            }
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
+}
+
+exports.updateCompleteOrder = (req, res, next) => {
+    try {
+        console.log(req.body.oid)
+        conn.query(UPDATE_COMPLETED_ORDER, [req.body.oid], async (err, data, feilds) => {
+            console.log(data);
+            
+            if (!data.length) {
+                res.status(200).send({
+                    result: "No records"
+                })
+            }
+            else {
                 res.header().status(200).send(data);
             }
         })
