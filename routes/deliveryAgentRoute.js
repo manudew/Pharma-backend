@@ -4,6 +4,7 @@ const DeliveryAgentController =  require('../controllers/DeliveryAgentController
 
 deliveryAgentRoute.post("/GetConfirmedOrders",DeliveryAgentController.getConfirmedOrdersDetails);
 deliveryAgentRoute.post("/GetCompletedOrders",DeliveryAgentController.getCompletedOrdersDetails);
+deliveryAgentRoute.post("/GetDetails",DeliveryAgentController.getDeliveryAgentDetails);
 
 module.exports = deliveryAgentRoute;
 
