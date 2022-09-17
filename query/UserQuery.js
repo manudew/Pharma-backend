@@ -1,5 +1,7 @@
 exports.GET_VEIRIFIED_PHARMACIES = "SELECT * FROM login INNER JOIN pharmacy ON  login.uid = pharmacy.uid AND login.verify =1 AND login.user_type = 'pharmacy' ";
 
+exports.GET_ORDER_PLACED_PHRMACIES = "SELECT DISTINCT uid,username FROM pharmacy INNER JOIN orders ON  pharmacy.uid = orders.pharmacy_id";
+
 exports.GET_VERIFIED_USER_BY_UID = "SELECT * FROM login WHERE uid =?";
 
 exports.UPDATE_CUSTOMER_USERNAME = "UPDATE customer SET username = ? WHERE uid = ?"
@@ -27,4 +29,3 @@ exports.UPDATE_PHARMACY_EMAIL = "UPDATE pharmacy SET email = ? WHERE uid = ?"
 exports.UPDATE_ADMIN_EMAIL = "UPDATE admin SET email = ? WHERE uid = ?";
 
 exports.UPDATE_PASSWORD = "UPDATE login SET password = ? WHERE uid = ?"
-

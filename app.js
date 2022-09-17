@@ -15,6 +15,8 @@ const signupRoute = require('./routes/signupRoute');
 const userRoute = require("./routes/userRoute");
 const customerRoute = require("./routes/customerRoute");
 const parmacyHomeRoute = require('./routes/parmacyHomeRoute');
+const deliveryAgentRoute = require('./routes/deliveryAgentRoute');
+const fileUpladRoute = require('./routes/fileUpload');
 
 const app = express();
 app.use(cors());
@@ -25,7 +27,9 @@ app.use("/Signup",signupRoute);
 app.use("/User",userRoute);
 app.use("/Customer",customerRoute);
 app.use("/PharmacyHome",parmacyHomeRoute);
+app.use("/DeliveryAgent",deliveryAgentRoute);
 app.use("/PharmacyOrder",parmacyOrderRoute);
+app.use("/UploadFile",fileUpladRoute);
 
 
 
