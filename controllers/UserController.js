@@ -10,11 +10,11 @@ const { GET_PHARMACY_MODEL } = require('../models/UserModel');
 const { GET_VEIRIFIED_PHARMACIES } = require("../query/UserQuery");
 const { GET_ORDER_PLACED_PHRMACIES } = require("../query/UserQuery");
 const { UPDATE_USERNAME_MODEL, UPDATE_TELEPHONE_MODEL, UPDATE_EMAIL_MODEL, UPDATE_PASSWORD_MODEL } = require('../models/UserModel');
-const { UPDATE_CUSTOMER_USERNAME, UPDATE_DELIVERYAGENT_USERNAME, UPDATE_ADMIN_USERNAME, UPDATE_PHARMACY_USERNAME, UPDATE_CUSTOMER_TELEPHONE, UPDATE_DELIVERYAGENT_TELEPHONE, UPDATE_PHARMACY_TELEPHONE, UPDATE_ADMIN_TELEPHONE, UPDATE_CUSTOMER_EMAIL, UPDATE_DELIVERYAGENT_EMAIL, UPDATE_PHARMACY_EMAIL, UPDATE_ADMIN_EMAIL, GET_VERIFIED_USER_BY_UID, UPDATE_PASSWORD } = require("../query/UserQuery");
+const { UPDATE_CUSTOMER_USERNAME, UPDATE_DELIVERYAGENT_USERNAME, UPDATE_ADMIN_USERNAME, UPDATE_PHARMACY_USERNAME, UPDATE_CUSTOMER_TELEPHONE, UPDATE_DELIVERYAGENT_TELEPHONE, UPDATE_PHARMACY_TELEPHONE, UPDATE_ADMIN_TELEPHONE, UPDATE_CUSTOMER_EMAIL, UPDATE_DELIVERYAGENT_EMAIL, UPDATE_PHARMACY_EMAIL, UPDATE_ADMIN_EMAIL, GET_VERIFIED_USER_BY_UID, UPDATE_PASSWORD, UPDATE_ADMIN_PROFILE_PIC, UPDATE_CUSTOMER_PROFILE_PIC, UPDATE_DELIVERYAGENT_PROFILE_PIC, UPDATE_PHARMACY_PROFILE_PIC } = require("../query/UserQuery");
 const { GET_VERIFIED_USER } = require('../query/signUp');
 const { GET_CUSTOMER_DETAILS } = require('../query/CustomerQuery');
-const { GET_DELIVERY_AGENT_DETAILS} = require("../query/DeliveyagentQuery");
-const {  GET_PHARMACY_DETAILS} = require("../query/pharmacyData");
+const { GET_DELIVERY_AGENT_DETAILS } = require("../query/DeliveyagentQuery");
+const { GET_PHARMACY_DETAILS } = require("../query/pharmacyData");
 const { GET_ADMIN_DETAILS } = require("../query/AdminQuery");
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -260,6 +260,50 @@ exports.updatePassword = (req, res, next) => {
             });
 
         })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
+}
+
+exports.uploadProfilepic = (req, res, next) => {
+    if (isEmpty(req)) return next(new AppError("form data not found ", 400));
+    try {
+        if (req.body.user_type == "customer") {
+            conn.query(UPDATE_CUSTOMER_PROFILE_PIC, [[req.body.path], [req.body.uid]], async (err, data, feilds) => {
+                if (err) return next(new AppError(err, 500));
+                    res.header().status(200).send({
+                        result: "Succesfully updated"
+                    });
+            });
+        }
+        if (req.body.user_type == "delivery_agent") {
+            conn.query(UPDATE_DELIVERYAGENT_PROFILE_PIC, [[req.body.path], [req.body.uid]], async (err, data, feilds) => {
+                if (err) return next(new AppError(err, 500));
+                    res.header().status(200).send({
+                        result: "Succesfully updated"
+                    });
+            });
+        }
+        if (req.body.user_type == "pharmacy") {
+            conn.query(UPDATE_PHA, [[req.body.path], [req.body.uid]], async (err, data, feilds) => {
+                if (err) return next(new AppError(err, 500));
+                    res.header().status(200).send({
+                        result: "Succesfully updated"
+                    });
+            });
+        }
+        if (req.body.user_type == "customer") {
+            conn.query(UPDATE_CUSTOMER_PROFILE_PIC, [[req.body.path], [req.body.uid]], async (err, data, feilds) => {
+                if (err) return next(new AppError(err, 500));
+                    res.header().status(200).send({
+                        result: "Succesfully updated"
+                    });
+            });
+        }
+
     }
     catch (err) {
         res.status(500).json({

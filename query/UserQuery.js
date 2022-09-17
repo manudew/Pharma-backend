@@ -18,7 +18,7 @@ exports.UPDATE_DELIVERYAGENT_TELEPHONE = "UPDATE delivery_agent SET contact_numb
 
 exports.UPDATE_PHARMACY_TELEPHONE = "UPDATE pharmacy SET contact_number = ? WHERE uid = ?"
 
-exports.UPDATE_ADMIN_TELEPHONE = "UPDATE admin SET contact_number = ? WHERE uid = ?";
+exports.UPDATE_ADMIN_TELEPHONE = "UPDATE admin SET contact_number = ? WHERE uid = ?"
 
 exports.UPDATE_CUSTOMER_EMAIL = "UPDATE customer SET email = ? WHERE uid = ?"
 
@@ -26,6 +26,14 @@ exports.UPDATE_DELIVERYAGENT_EMAIL = "UPDATE delivery_agent SET email = ? WHERE 
 
 exports.UPDATE_PHARMACY_EMAIL = "UPDATE pharmacy SET email = ? WHERE uid = ?"
 
-exports.UPDATE_ADMIN_EMAIL = "UPDATE admin SET email = ? WHERE uid = ?";
+exports.UPDATE_ADMIN_EMAIL = "UPDATE admin SET email = ? WHERE uid = ?"
 
 exports.UPDATE_PASSWORD = "UPDATE login SET password = ? WHERE uid = ?"
+
+exports.UPDATE_CUSTOMER_PROFILE_PIC = "UPDATE customer SET profile_pic = ? WHERE uid = ?"
+
+exports.UPDATE_DELIVERYAGENT_PROFILE_PIC = "UPDATE delivery_agent SET profile_pic = ? WHERE uid = ?"
+
+exports.UPDATE_PHARMACY_PROFILE_PIC = "UPDATE pharmacy SET profile_pic = ? WHERE uid = ?"
+
+exports.UPDATE_ADMIN_PROFILE_PIC = "UPDATE admin SET profile_pic = ? WHERE uid = ?"
