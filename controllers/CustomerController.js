@@ -13,7 +13,6 @@ exports.getCustomerDetails = (req, res, next) => {
     try {
         const { error } = GET_CUSTOMER_MODEL.validate(req.body);
         if (error) return next(new AppError(error.details[0].message, 400));
-
         conn.query(GET_CUSTOMER_DETAILS, [req.body.uid], async (err, data, feilds) => {
             if (!data.length) {
                 res.status(200).send({

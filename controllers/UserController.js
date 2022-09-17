@@ -10,7 +10,7 @@ const { GET_VEIRIFIED_PHARMACIES, UPDATE_CUSTOMER_USERNAME, UPDATE_DELIVERYAGENT
 const { GET_VERIFIED_USER } = require('../query/signUp');
 const { GET_CUSTOMER_DETAILS } = require('../query/CustomerQuery');
 const { GET_DELIVERY_AGENT_DETAILS} = require("../query/DeliveyagentQuery");
-const {  GET_PHARMACY_DETAILS} = require("../query/pharmacyQuery");
+const {  GET_PHARMACY_DETAILS} = require("../query/pharmacyData");
 const { GET_ADMIN_DETAILS } = require("../query/AdminQuery");
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
