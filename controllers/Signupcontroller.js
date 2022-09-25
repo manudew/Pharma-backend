@@ -37,6 +37,7 @@ exports.User_SignIn = (req, res, next) => {
 
             res.header("auth-token", token).status(200).json({
                 token: token,
+                userId: data[0].uid,
                 success: true
             })
         })
