@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const { INSERT_INVENTORY_ITEM_MODEL } = require('../models/InventoryItem');
 
-const { ADD_NEW_INVENTORY_ITEM } = require("../query/pharmacyData");
+const { ADD_NEW_INVENTORY_ITEM, GET_ALL_INVENTORY_ITEMS } = require("../query/pharmacyData");
 
 exports.insertInventoryItem = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
@@ -19,3 +19,14 @@ exports.insertInventoryItem = (req, res, next) => {
         });
     });
 }
+
+exports.getAllInventoryItems = (req, res, next)=>{
+    const pid =req.params.pharmacy_id;
+    conn.query(GET_ALL_INVENTORY_ITEMS,pid, (err, result)=>{
+       if (err) {
+         console.log(err)}
+         else{
+          res.header().status(200).send(result);
+         }
+       });
+ }
