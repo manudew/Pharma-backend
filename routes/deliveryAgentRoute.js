@@ -6,6 +6,13 @@ deliveryAgentRoute.post("/GetConfirmedOrders",DeliveryAgentController.getConfirm
 deliveryAgentRoute.post("/GetCompletedOrders",DeliveryAgentController.getCompletedOrdersDetails);
 deliveryAgentRoute.post("/GetDetails",DeliveryAgentController.getDeliveryAgentDetails);
 deliveryAgentRoute.post("/CompleteOrder",DeliveryAgentController.updateCompleteOrder);
+deliveryAgentRoute.post("/GetPharmacyOrders",DeliveryAgentController.getPharacyOrders);
+deliveryAgentRoute.post("/GetOrder",DeliveryAgentController.getOrder);
+deliveryAgentRoute.post("/GetRegisteredPharmacies",DeliveryAgentController.getRegisteredPharmacies);
+deliveryAgentRoute.post("/UnregisterFromPharmacy",DeliveryAgentController.UnregisterFromPharmacy);
+deliveryAgentRoute.post("/GetPharmaciesForRegister",DeliveryAgentController.GetPharmaciesForRegister);
+deliveryAgentRoute.post("/RegisterInPharmacy",DeliveryAgentController.RegisterInPharmacy);
+
 
 module.exports = deliveryAgentRoute;
 
