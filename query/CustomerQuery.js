@@ -1,1 +1,3 @@
 exports.GET_CUSTOMER_DETAILS =  "SELECT * FROM login INNER JOIN customer ON login.uid= ? AND login.verify = 1 AND login.uid =customer.uid";
+exports.INSERT_ORDER = "INSERT INTO orders VALUES (NULL,?,NULL,?,?,?,NULL,0,?,?,?,350,CURRENT_TIMESTAMP(),'pending',0,NULL)";
+exports.GET_ORDERS_BY_UID = "SELECT * FROM `orders` JOIN pharmacy On orders.pharmacy_id = pharmacy.uid  LEFT JOIN delivery_agent ON orders.delivery_agent_id = delivery_agent.uid WHERE customer_id = ?";

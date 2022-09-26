@@ -29,11 +29,10 @@ const imageUpload = multer({
   }
 })
 
-
 // const upload = multer({storage: imageStorage})
 // fileUploadRoute.post("/UploadProfilePhoto",FileUploadController.uploadProfilePhoto);
 fileUploadRoute.post('/UploadProfilePhoto', imageUpload.single('profile'), (req, res) => {
-    console.log(req.body);
+    console.log(req.body.uid)
     res.send(req.file)
 }, (error, req, res, next) => {
     res.status(400).send({ error: error.message })

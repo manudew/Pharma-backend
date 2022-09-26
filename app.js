@@ -23,6 +23,7 @@ app.use(cors());
 
 app.use(express.json());
 
+
 app.use("/Signup",signupRoute);
 app.use("/User",userRoute);
 app.use("/Customer",customerRoute);

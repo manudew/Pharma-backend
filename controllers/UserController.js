@@ -6,6 +6,7 @@ const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+
 const { GET_PHARMACY_MODEL } = require('../models/UserModel');
 const { GET_VEIRIFIED_PHARMACIES } = require("../query/UserQuery");
 const { GET_ORDER_PLACED_PHRMACIES } = require("../query/UserQuery");
@@ -74,9 +75,7 @@ exports.updateUsername = (req, res, next) => {
             conn.query(UPDATE_CUSTOMER_USERNAME, [[req.body.username], [req.body.uid]], async (err, data, feilds) => {
                 if (err) return next(new AppError(err, 500));
                 conn.query(GET_CUSTOMER_DETAILS, [req.body.uid], async (err, data, feilds) => {
-                    res.header().status(200).send({
-                        result: data
-                    });
+                    res.header().status(200).send(req.file);
                 });
             });
         }
@@ -84,9 +83,7 @@ exports.updateUsername = (req, res, next) => {
             conn.query(UPDATE_DELIVERYAGENT_USERNAME, [[req.body.username], [req.body.uid]], async (err, data, feilds) => {
                 if (err) return next(new AppError(err, 500));
                 conn.query(GET_DELIVERY_AGENT_DETAILS, [req.body.uid], async (err, data, feilds) => {
-                    res.header().status(200).send({
-                        result: data
-                    });
+                    res.header().status(200).send(req.file);
                 });
             });
         }
@@ -94,9 +91,7 @@ exports.updateUsername = (req, res, next) => {
             conn.query(UPDATE_PHARMACY_USERNAME, [[req.body.username], [req.body.uid]], async (err, data, feilds) => {
                 if (err) return next(new AppError(err, 500));
                 conn.query(GET_PHARMACY_DETAILS, [req.body.uid], async (err, data, feilds) => {
-                    res.header().status(200).send({
-                        result: data
-                    });
+                    res.header().status(200).send(req.file);
                 });
             });
         }
@@ -104,9 +99,7 @@ exports.updateUsername = (req, res, next) => {
             conn.query(UPDATE_ADMIN_USERNAME, [[req.body.username], [req.body.uid]], async (err, data, feilds) => {
                 if (err) return next(new AppError(err, 500));
                 conn.query(GET_ADMIN_DETAILS, [req.body.uid], async (err, data, feilds) => {
-                    res.header().status(200).send({
-                        result: data
-                    });
+                    res.header().status(200).send(req.file);
                 });
             });
         }
@@ -269,40 +262,52 @@ exports.updatePassword = (req, res, next) => {
 }
 
 exports.uploadProfilepic = (req, res, next) => {
+    console.log(req.file);
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
+
     try {
+        
+        var path =  req.file.destination.substring(1) + "/" + req.file.filename;
+        console.log(path);
         if (req.body.user_type == "customer") {
-            conn.query(UPDATE_CUSTOMER_PROFILE_PIC, [[req.body.path], [req.body.uid]], async (err, data, feilds) => {
+            
+            conn.query(UPDATE_CUSTOMER_PROFILE_PIC, [path, [req.body.uid]], async (err, data, feilds) => {
                 if (err) return next(new AppError(err, 500));
-                    res.header().status(200).send({
-                        result: "Succesfully updated"
-                    });
+                res.header().status(200).send({
+                    result: "Succesfully updated"
+                    
+                });
             });
         }
         if (req.body.user_type == "delivery_agent") {
-            conn.query(UPDATE_DELIVERYAGENT_PROFILE_PIC, [[req.body.path], [req.body.uid]], async (err, data, feilds) => {
+            
+            conn.query(UPDATE_DELIVERYAGENT_PROFILE_PIC, [path, [req.body.uid]], async (err, data, feilds) => {
                 if (err) return next(new AppError(err, 500));
-                    res.header().status(200).send({
-                        result: "Succesfully updated"
-                    });
+                res.header().status(200).send({
+                    result: "Succesfully updated"
+                });
             });
         }
         if (req.body.user_type == "pharmacy") {
-            conn.query(UPDATE_PHA, [[req.body.path], [req.body.uid]], async (err, data, feilds) => {
+            
+            conn.query(UPDATE_PHARMACY_PROFILE_PIC, [path, [req.body.uid]], async (err, data, feilds) => {
                 if (err) return next(new AppError(err, 500));
-                    res.header().status(200).send({
-                        result: "Succesfully updated"
-                    });
+                res.header().status(200).send({
+                    result: "Succesfully updated"
+                });
             });
         }
-        if (req.body.user_type == "customer") {
-            conn.query(UPDATE_CUSTOMER_PROFILE_PIC, [[req.body.path], [req.body.uid]], async (err, data, feilds) => {
+        if (req.body.user_type == "admin") {
+
+            conn.query(UPDATE_ADMIN_PROFILE_PIC, [path, [req.body.uid]], async (err, data, feilds) => {
                 if (err) return next(new AppError(err, 500));
-                    res.header().status(200).send({
-                        result: "Succesfully updated"
-                    });
+                res.header().status(200).send({
+                    result: "Succesfully updated"
+                });
             });
         }
+
+   
 
     }
     catch (err) {
