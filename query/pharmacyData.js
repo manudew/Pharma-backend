@@ -5,3 +5,4 @@ exports.GET_ALL_ORDERS = "SELECT * FROM  orders JOIN customer ON orders.customer
 exports.ADD_NEW_INVENTORY_ITEM = "INSERT INTO inventory(batch_No, pharmacy_id, brand_name, drug_name, quantity, expiry_date, manufacture_date, licenece_No, unit_price) VALUES (?,?,?,?,?,?,?,?,?)"
 exports.GET_INVENTORY_ITEM = "SELECT * FROM inventory WHERE pharmacy_id = ? AND expiry_date = ? AND batch_No = ?";
 exports.GET_ALL_INVENTORY_ITEMS = "SELECT * FROM inventory WHERE pharmacy_id = ?";
+exports.DELETE_INVENTORY_ITEM = "DELETE FROM inventory WHERE pharmacy_id =? AND batch_No = ?";
