@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const { INSERT_INVENTORY_ITEM_MODEL } = require('../models/InventoryItem');
 
-const { ADD_NEW_INVENTORY_ITEM, GET_ALL_INVENTORY_ITEMS, DELETE_INVENTORY_ITEM } = require("../query/pharmacyData");
+const { ADD_NEW_INVENTORY_ITEM, GET_ALL_INVENTORY_ITEMS, DELETE_INVENTORY_ITEM, UPDATE_INVENTORY_ITEM } = require("../query/pharmacyData");
 
 exports.insertInventoryItem = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
@@ -44,3 +44,16 @@ exports.getAllInventoryItems = (req, res, next)=>{
          }
        });
  }
+
+ exports.updateInventoryItem = (req, res, next) => {
+    if (isEmpty(req)) return next(new AppError("form data not found ", 400));
+    const { error } = INSERT_INVENTORY_ITEM_MODEL.validate(req.body);
+    if (error) return next(new AppError(error.details[0].message, 400));
+    conn.query(UPDATE_INVENTORY_ITEM, [[req.body.brand_name], [req.body.drug_name],[req.body.quantity], [req.body.expiry_date],[req.body.manufacture_date], [req.body.licenece_No],[req.body.unit_price],[req.body.pharmacy_id],[req.body.batch_No]], async (err, data, feilds) => {
+        if (err) return next(new AppError(err, 500));
+        res.header().status(200).send({
+            result: req.body,
+            success: true
+        });
+    });
+}
