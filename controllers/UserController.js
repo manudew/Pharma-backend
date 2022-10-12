@@ -5,6 +5,7 @@ const conn = require('../service/db_service');
 const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const http = require('http');
 
 
 const { GET_PHARMACY_MODEL } = require('../models/UserModel');
@@ -19,6 +20,7 @@ const { GET_PHARMACY_DETAILS } = require("../query/pharmacyData");
 const { GET_ADMIN_DETAILS } = require("../query/AdminQuery");
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const axios = require("axios");
 
 exports.getPharmacies = (req, res, next) => {
 
@@ -307,12 +309,24 @@ exports.uploadProfilepic = (req, res, next) => {
             });
         }
 
-   
 
     }
     catch (err) {
         res.status(500).json({
             error: err
+        })
+    }
+}
+
+exports.sendSMSNotifications = (receiver,body) => {
+    try{
+        axios.get(`https://www.textit.biz/sendmsg?id=94765282976&pw=4772&to=${receiver}&text=${body}`).then(response => {
+            console.log("Hello");
+        });     
+    }
+    catch (err){
+        res.status(500).json({
+            error : err
         })
     }
 }

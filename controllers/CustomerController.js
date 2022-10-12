@@ -6,15 +6,19 @@ const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { GET_CUSTOMER_MODEL } = require("../models/CustomerModel");
-const { GET_CUSTOMER_DETAILS, INSERT_ORDER,GET_ORDERS_BY_UID} = require("../query/CustomerQuery")
+const { GET_CUSTOMER_DETAILS, INSERT_ORDER,GET_ORDERS_BY_UID} = require("../query/CustomerQuery");
+const { default: axios } = require('axios');
+const UserController = require("../controllers/UserController");
 
 exports.getCustomerDetails = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
+
     try {
-        const { error } = GET_CUSTOMER_MODEL.validate(req.body);
-        if (error) return next(new AppError(error.details[0].message, 400));
+        console.log(req.body)
+        // if (error) return next(new AppError(error.details[0].message, 400));
         conn.query(GET_CUSTOMER_DETAILS, [req.body.uid], async (err, data, feilds) => {
             if (!data.length) {
+               
                 res.status(200).send({
                     result: "No records"
                 })
@@ -37,7 +41,7 @@ exports.makeOrder = (req,res,next) => {
     try{
         if(req.body.is_prescription == "true"){
             var path =  req.file.destination.substring(1) + "/" + req.file.filename;
-            console.log("hello");
+
             conn.query(INSERT_ORDER,[[req.body.uid],[req.body.pharmacy_id],1,[req.body.address],path,"",[req.body.delivery]],async  (err, data, feilds) => {
                 res.status(200).send({
                     success: true

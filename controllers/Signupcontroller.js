@@ -10,6 +10,7 @@ const nodemailer = require('nodemailer');
 const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const UserController = require("../controllers/UserController");
 
 
 
@@ -33,7 +34,7 @@ exports.User_SignIn = (req, res, next) => {
                 success: false
             }));
 
-            const token = JWT.sign({ User_name: data[0].username, User_email: data[0].email, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
+            const token = JWT.sign({ User_name: data[0].username, User_email: data[0].contact_number, User_ID: data[0].uid, User_type: data[0].user_type }, "ucscucscucsc", { expiresIn: "1d" });
 
             res.header("auth-token", token).status(200).json({
                 token: token,
@@ -80,7 +81,7 @@ exports.User_SignUp = (req, res, next) => {
 
                 conn.query(REGISTER_CUSTOMER, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-                    this.sendEmailVerification(req.body.email, res, next);
+                    UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
                     res.status(200).json({
                         success: true,
                         email: req.body.email,
@@ -92,7 +93,7 @@ exports.User_SignUp = (req, res, next) => {
 
                 conn.query(REGISTER_PHARMACY, [[req.body.username, req.body.email, req.body.address, hashedValue, req.body.telephone, null, req.body.regNo, req.body.bName, req.body.accNo, null, null, 1, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-                    this.sendEmailVerification(req.body.email, res, next);
+                    UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
 
                     res.status(200).json({
                         success: true,
@@ -105,7 +106,7 @@ exports.User_SignUp = (req, res, next) => {
             else if (req.body.user_type == 'Delivery agent') {
                 conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-                    this.sendEmailVerification(req.body.email, res, next);
+                    UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
 
                     res.status(200).json({
                         success: true,
@@ -117,8 +118,7 @@ exports.User_SignUp = (req, res, next) => {
             else if (req.body.user_type == 'admin') {
                 conn.query(REGISTER_ADMIN, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
-                    this.sendEmailVerification(req.body.email, res, next);
-
+                    UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
                     res.status(200).json({
                         success: true,
                         email: req.body.email
