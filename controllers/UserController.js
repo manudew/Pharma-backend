@@ -48,7 +48,7 @@ exports.getPharmacies = (req, res, next) => {
 exports.getOrderPlacedPharmacies = (req, res, next) => {
 
     try {
-        conn.query(GET_ORDER_PLACED_PHRMACIES, [], async (err, data, feilds) => {
+        conn.query(GET_ORDER_PLACED_PHRMACIES, [req.body.uid], async (err, data, feilds) => {
             console.log(data);
             if (!data.length) {
                 res.status(200).send({
