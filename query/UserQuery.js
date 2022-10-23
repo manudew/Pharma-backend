@@ -37,3 +37,5 @@ exports.UPDATE_DELIVERYAGENT_PROFILE_PIC = "UPDATE delivery_agent SET profile_pi
 exports.UPDATE_PHARMACY_PROFILE_PIC = "UPDATE pharmacy SET profile_pic = ? WHERE uid = ?"
 
 exports.UPDATE_ADMIN_PROFILE_PIC = "UPDATE admin SET profile_pic = ? WHERE uid = ?"
+
+exports.SEND_NOTIFICATION = "INSERT INTO notification VALUES (NULL,?,?,?,CURRENT_TIMESTAMP(),?)"

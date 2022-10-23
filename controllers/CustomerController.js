@@ -6,7 +6,7 @@ const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { GET_CUSTOMER_MODEL } = require("../models/CustomerModel");
-const { GET_CUSTOMER_DETAILS, INSERT_ORDER,GET_ORDERS_BY_UID} = require("../query/CustomerQuery");
+const { GET_CUSTOMER_DETAILS, INSERT_ORDER,GET_ORDERS_BY_UID,ACCEPT_ORDER,REJECT_ORDER} = require("../query/CustomerQuery");
 const { default: axios } = require('axios');
 const UserController = require("../controllers/UserController");
 
@@ -36,20 +36,19 @@ exports.getCustomerDetails = (req, res, next) => {
 }
 
 exports.makeOrder = (req,res,next) => {
+    
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
-    console.log(req.body);
+
     try{
         if(req.body.is_prescription == "true"){
-            var path =  req.file.destination.substring(1) + "/" + req.file.filename;
-
-            conn.query(INSERT_ORDER,[[req.body.uid],[req.body.pharmacy_id],1,[req.body.address],path,"",[req.body.delivery]],async  (err, data, feilds) => {
+            conn.query(INSERT_ORDER,[[req.body.uid],[req.body.pharmacy_id],1,[req.body.address],[req.body.prescription],"",[req.body.delivery]],async  (err, data, feilds) => {
                 res.status(200).send({
                     success: true
                 })
             });
         }
         else{
-            conn.query(INSERT_ORDER,[[req.body.uid],[req.body.pharmacy_id],0,[req.body.address],NULL,[req.body.prescription],[req.body.delivery]],async  (err, data, feilds) => {
+            conn.query(INSERT_ORDER,[[req.body.uid],[req.body.pharmacy_id],0,[req.body.address],[req.body.prescription],"",[req.body.delivery]],async  (err, data, feilds) => {
                 res.status(200).send({
                     success: true
                 })
@@ -86,5 +85,32 @@ exports.getOrdersByUid = (req,res,next) => {
             error: err
         })
     }
+}
+
+exports.orderAcceptance = (req,res,next) => {
+    try{
+        if(req.body.status == true){
+            conn.query(ACCEPT_ORDER, [req.body.order_id], async (err, data, feilds) => {
+                res.header().status(200).send({
+                    result: true
+                });
+            })
+        }
+        else{
+            conn.query(REJECT_ORDER, [req.body.order_id], async (err, data, feilds) => {
+                res.header().status(200).send({
+                    result: true
+                });
+            })
+        }
+       
+
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
+
 }
 
