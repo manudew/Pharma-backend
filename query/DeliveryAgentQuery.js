@@ -19,3 +19,5 @@ exports.UNREGISTER_FROM_PHARMACIES = "DELETE FROM register WHERE (uid=? AND phar
 exports.GET_ALL_PHARMACIES = "SELECT * FROM pharmacy WHERE uid NOT IN (SELECT pharmacy.uid FROM pharmacy INNER JOIN register ON pharmacy.uid=register.pharmacy_id WHERE register.uid=?)"
 
 exports.REGISTER_IN_NEW_PHARMACY = "INSERT INTO register VALUES (?, ?)"
+
+exports.GET_ORDER_CUSTOMER = "SELECT customer.contact_number AS cus_contact,customer.uid, delivery_agent.contact_number AS del_contact FROM orders JOIN customer ON customer.uid = orders.customer_id JOIN delivery_agent ON delivery_agent.uid=orders.delivery_agent_id WHERE order_id = ?"

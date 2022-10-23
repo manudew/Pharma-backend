@@ -38,4 +38,4 @@ exports.UPDATE_PHARMACY_PROFILE_PIC = "UPDATE pharmacy SET profile_pic = ? WHERE
 
 exports.UPDATE_ADMIN_PROFILE_PIC = "UPDATE admin SET profile_pic = ? WHERE uid = ?"
 
-exports.SEND_NOTIFICATION = "INSERT INTO notification VALUES (NULL,?,?,?,CURRENT_TIMESTAMP(),?)"
+exports.SEND_NOTIFICATION = "INSERT INTO notification VALUES (NULL,?,?,?,CURRENT_TIMESTAMP(),?,0)"

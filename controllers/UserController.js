@@ -317,7 +317,6 @@ exports.uploadProfilepic = (req, res, next) => {
 }
 
 exports.sendNotifications = (sender,receiver,body,status) => {
-    if (isEmpty(req)) return next(new AppError("form data not found ", 400));
 
     try{
         conn.query(SEND_NOTIFICATION, [receiver, body, status, sender], async (err, data, feilds) => {
