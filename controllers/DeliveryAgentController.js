@@ -13,9 +13,12 @@ const { GET_DELIVERY_AGENT_MODEL } = require("../models/DeliveryAgentModel");
 const { GET_PHARMACY_ORDERS } = require("../query/DeliveryAgentQuery");
 const { UPDATE_GET_ORDER } = require("../query/DeliveryAgentQuery");
 const { GET_REGISTERED_PHARMACIES } = require("../query/DeliveryAgentQuery");
+const { GET_ORDER_CUSTOMER } = require("../query/DeliveryAgentQuery");
 const { UNREGISTER_FROM_PHARMACIES } = require("../query/DeliveryAgentQuery");
 const { GET_ALL_PHARMACIES } = require("../query/DeliveryAgentQuery");
 const { REGISTER_IN_NEW_PHARMACY } = require("../query/DeliveryAgentQuery");
+const UserController = require('../controllers/UserController');
+const { result } = require('@hapi/joi/lib/base');
 
 
 
@@ -138,7 +141,17 @@ exports.getOrder = (req, res, next) => {
         console.log(req.body.oid)
         conn.query(UPDATE_GET_ORDER, [req.body.uid, req.body.oid], async (err, data, feilds) => {
             console.log(data);
-            
+
+
+            conn.query(GET_ORDER_CUSTOMER, [req.body.oid], async (err, result, feilds)=>{
+
+                
+                var notificationBody = "Your order (ID: "+ req.body.oid + ") will be delivered by delivery agent (ID: "+ req.body.uid +"). Delivery agent contact number: "+ result[0].del_contact
+
+                UserController.sendSMSNotifications(result[0].cus_contact, notificationBody)
+                UserController.sendNotifications(req.body.uid,result[0].uid,notificationBody,"delivery")
+            })
+           
             if (!data.length) {
                 res.status(200).send({
                     result: "No records"
