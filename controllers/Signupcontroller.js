@@ -76,10 +76,12 @@ exports.User_SignUp = (req, res, next) => {
             const otp = Math.floor(100000 + Math.random() * 900000);
             const hashedValue = await bcrypt.hash(req.body.password, salt);
             const email_token = crypto.randomBytes(64).toString('hex');
+            const default_profilepic_customer = 'https://firebasestorage.googleapis.com/v0/b/pharma-file.appspot.com/o/avatar-gcd60d8f1f_1280.png?alt=media&token=f1908105-ab3a-4663-91e8-1f7e75268def';
+            const default_profilepic_pharmacy = 'https://firebasestorage.googleapis.com/v0/b/pharma-file.appspot.com/o/TINYPH~1.JPG?alt=media&token=f36ae662-b908-4234-bde6-2303df78b252';
 
             if (req.body.user_type == 'Customer') {
 
-                conn.query(REGISTER_CUSTOMER, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_CUSTOMER, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, default_profilepic_customer, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
                     res.status(200).json({
@@ -91,7 +93,7 @@ exports.User_SignUp = (req, res, next) => {
 
             else if (req.body.user_type == 'pharmacy') {
 
-                conn.query(REGISTER_PHARMACY, [[req.body.username, req.body.email, req.body.address, hashedValue, req.body.telephone, null, req.body.regNo, req.body.bName, req.body.accNo, null, null, 1, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_PHARMACY, [[req.body.username, req.body.email, req.body.address, hashedValue, req.body.telephone, default_profilepic_pharmacy, req.body.regNo, req.body.bName, req.body.accNo, null, null, 1, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
 
@@ -104,7 +106,7 @@ exports.User_SignUp = (req, res, next) => {
             }
 
             else if (req.body.user_type == 'Delivery agent') {
-                conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, default_profilepic_customer, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
 
@@ -116,7 +118,7 @@ exports.User_SignUp = (req, res, next) => {
             }
 
             else if (req.body.user_type == 'admin') {
-                conn.query(REGISTER_ADMIN, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, null, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_ADMIN, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, default_profilepic_customer, otp]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
                     res.status(200).json({
