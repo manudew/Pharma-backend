@@ -1,11 +1,5 @@
 const express = require('express');
-
-
-
 const parmacyOrderRoute =require('./routes/parmacyOrderRoute');
-
-
-
 
 
 const cors = require('cors');
@@ -16,7 +10,7 @@ const userRoute = require("./routes/userRoute");
 const customerRoute = require("./routes/customerRoute");
 const parmacyHomeRoute = require('./routes/parmacyHomeRoute');
 const deliveryAgentRoute = require('./routes/deliveryAgentRoute');
-const fileUpladRoute = require('./routes/fileUpload');
+const stripeRoute = require('./routes/stripeRoute');
 
 const app = express();
 app.use(cors());
@@ -30,7 +24,7 @@ app.use("/Customer",customerRoute);
 app.use("/PharmacyHome",parmacyHomeRoute);
 app.use("/DeliveryAgent",deliveryAgentRoute);
 app.use("/PharmacyOrder",parmacyOrderRoute);
-app.use("/UploadFile",fileUpladRoute);
+app.use("/Stripe",stripeRoute);
 
 
 
@@ -40,3 +34,4 @@ const PORT = 3000;
 app.listen(PORT, () => {
     console.log(" Server running on port " + PORT);
 })
+
