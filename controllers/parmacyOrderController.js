@@ -1,6 +1,9 @@
 
 const conn = require('../service/db_service');
-const { GET_ALL_ORDERS, GET_ORDER} = require('../query/pharmacyData');
+const { GET_ALL_ORDERS, GET_ORDER, UPLOAD_FEEDBACK} = require('../query/pharmacyData');
+const { isEmpty } = require('../utils/is_empty');
+const AppError = require('../utils/appError');
+
 
 
 
@@ -30,4 +33,18 @@ conn.query(GET_ORDER,[pharmacy_id,order_id], (err, result)=>{
       res.header().status(200).send(result);
       }
     });
+}
+
+ exports.uploadFeedback = (req, res, next) => {
+  const order_id =req.params.order_id;
+  const url = req.body.url;
+    if (isEmpty(req)) return next(new AppError("form data not found ", 400));
+    conn.query(UPLOAD_FEEDBACK, [url,order_id], async (err, data, feilds) => {
+        if (err) return next(new AppError(err, 500));
+        res.header().status(200).send({
+            result: req.body,
+            success: true
+        });
+    });
+    
 }
