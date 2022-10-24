@@ -1,16 +1,7 @@
 const express = require('express');
-
-
-
-const parmacyOrderRoute =require('./routes/parmacyOrderRoute');
-
-
-
-
-
 const cors = require('cors');
 const bodyparser = require('body-parser');
-
+const parmacyOrderRoute =require('./routes/parmacyOrderRoute');
 const signupRoute = require('./routes/signupRoute');
 const userRoute = require("./routes/userRoute");
 const customerRoute = require("./routes/customerRoute");
@@ -32,8 +23,13 @@ app.use("/Customer",customerRoute);
 app.use("/PharmacyHome",parmacyHomeRoute);
 app.use("/DeliveryAgent",deliveryAgentRoute);
 app.use("/PharmacyOrder",parmacyOrderRoute);
+app.use("/DrugDetails",parmacyHomeRoute);
+app.use("/OngoingViewDetails",parmacyHomeRoute);
+app.use("/OngoingViewDetailsNoDelivery",parmacyHomeRoute);
+app.use("/RejectOrder",parmacyHomeRoute);
 app.use("/UploadFile",fileUpladRoute);
 app.use("/PharmacyInventory",pharmacyInventoryRoute);
+
 
 
 
