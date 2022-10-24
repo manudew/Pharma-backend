@@ -1,0 +1,1 @@
+exports.GET_ADMIN_DETAILS =  "SELECT * FROM login INNER JOIN admin ON login.uid= ? AND login.verify = 1 AND login.uid = admin.uid";
