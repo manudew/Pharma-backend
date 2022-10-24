@@ -1,6 +1,6 @@
 const express = require('express');
 
-const parmacyOrderRoute =express.Router();
+const parmacyOrderRoute = express.Router();
 
 const parmacyOrder_controller = require('../controllers/parmacyOrderController');
 
