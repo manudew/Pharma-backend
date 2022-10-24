@@ -38,8 +38,9 @@ conn.query(GET_ORDER,[pharmacy_id,order_id], (err, result)=>{
  exports.uploadFeedback = (req, res, next) => {
   const order_id =req.params.order_id;
   const url = req.body.url;
+  const total = req.body.total;
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
-    conn.query(UPLOAD_FEEDBACK, [url,order_id], async (err, data, feilds) => {
+    conn.query(UPLOAD_FEEDBACK, [url,total,order_id], async (err, data, feilds) => {
         if (err) return next(new AppError(err, 500));
         res.header().status(200).send({
             result: req.body,
