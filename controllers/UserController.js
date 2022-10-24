@@ -48,7 +48,7 @@ exports.getPharmacies = (req, res, next) => {
 exports.getOrderPlacedPharmacies = (req, res, next) => {
 
     try {
-        conn.query(GET_ORDER_PLACED_PHRMACIES, [], async (err, data, feilds) => {
+        conn.query(GET_ORDER_PLACED_PHRMACIES, [req.body.uid], async (err, data, feilds) => {
             console.log(data);
             if (!data.length) {
                 res.status(200).send({
@@ -317,7 +317,6 @@ exports.uploadProfilepic = (req, res, next) => {
 }
 
 exports.sendNotifications = (sender,receiver,body,status) => {
-    if (isEmpty(req)) return next(new AppError("form data not found ", 400));
 
     try{
         conn.query(SEND_NOTIFICATION, [receiver, body, status, sender], async (err, data, feilds) => {
