@@ -7,6 +7,7 @@ const userRoute = require("./routes/userRoute");
 const customerRoute = require("./routes/customerRoute");
 const parmacyHomeRoute = require('./routes/parmacyHomeRoute');
 const deliveryAgentRoute = require('./routes/deliveryAgentRoute');
+const stripeRoute = require('./routes/stripeRoute');
 const fileUpladRoute = require('./routes/fileUpload');
 const pharmacyInventoryRoute = require('./routes/parmacyInventoryRoute');
 
@@ -23,6 +24,7 @@ app.use("/Customer",customerRoute);
 app.use("/PharmacyHome",parmacyHomeRoute);
 app.use("/DeliveryAgent",deliveryAgentRoute);
 app.use("/PharmacyOrder",parmacyOrderRoute);
+app.use("/Stripe",stripeRoute);
 app.use("/DrugDetails",parmacyHomeRoute);
 app.use("/OngoingViewDetails",parmacyHomeRoute);
 app.use("/OngoingViewDetailsNoDelivery",parmacyHomeRoute);
@@ -34,8 +36,9 @@ app.use("/PharmacyInventory",pharmacyInventoryRoute);
 
 
 
-const PORT = 3001;
+const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(" Server running on port " + PORT);
 })
+
