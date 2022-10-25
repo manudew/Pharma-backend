@@ -1,6 +1,9 @@
 exports.GET_VEIRIFIED_PHARMACIES = "SELECT * FROM login INNER JOIN pharmacy ON  login.uid = pharmacy.uid AND login.verify =1 AND login.user_type = 'pharmacy' ";
 
+exports.GET_VERIFIED_DELIVERYAGENTS = "SELECT * FROM login INNER JOIN delivery_agent ON  login.uid = delivery_agent.uid AND login.verify =1 AND login.user_type = 'delivery_agent' ";
+
 exports.GET_ORDER_PLACED_PHRMACIES = "SELECT DISTINCT pharmacy.uid,pharmacy.username,pharmacy.address, pharmacy.open_time, pharmacy.close_time, pharmacy.rating FROM pharmacy JOIN orders ON  pharmacy.uid = orders.pharmacy_id JOIN register ON pharmacy.uid = register.pharmacy_id WHERE (orders.status='delivery' AND register.uid = ?)";
+
 
 exports.GET_VERIFIED_USER_BY_UID = "SELECT * FROM login WHERE uid =?";
 

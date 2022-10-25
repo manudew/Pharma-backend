@@ -4,6 +4,7 @@ const bodyparser = require('body-parser');
 const parmacyOrderRoute =require('./routes/parmacyOrderRoute');
 const signupRoute = require('./routes/signupRoute');
 const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute");
 const customerRoute = require("./routes/customerRoute");
 const parmacyHomeRoute = require('./routes/parmacyHomeRoute');
 const deliveryAgentRoute = require('./routes/deliveryAgentRoute');

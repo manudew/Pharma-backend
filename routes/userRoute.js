@@ -30,6 +30,7 @@ const path = require('path');
 const UserController =  require('../controllers/UserController');
 
 userRoute.post("/GetPharmacies",UserController.getPharmacies);
+userRoute.post("/GetDeliveryAgents",UserController.getDeliveryAgents);
 userRoute.post("/GetOrderPlacedPharmacies",UserController.getOrderPlacedPharmacies);
 userRoute.post("/updateUsername",UserController.updateUsername);
 userRoute.post("/updateTelephone",UserController.updateTelephone);
