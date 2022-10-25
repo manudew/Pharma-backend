@@ -20,3 +20,4 @@ exports.DELETE_INVENTORY_ITEM = "DELETE FROM inventory WHERE pharmacy_id =? AND 
 exports.UPDATE_INVENTORY_ITEM = "UPDATE `inventory` SET brand_name=?,drug_name=?,quantity=?,expiry_date=?,manufacture_date=?,licenece_No=?,unit_price=? WHERE pharmacy_id =? AND batch_No = ?";
 exports.UPDATE_QUANTITY = "UPDATE `inventory` SET quantity=? WHERE pharmacy_id = ? AND batch_No = ?";
 
+exports.GET_NOTIFCATION_DETAILS = "SELECT customer.contact_number FROM customer JOIN order ON order.customer_id = customer.uid WHERE order.order_id = ?"
