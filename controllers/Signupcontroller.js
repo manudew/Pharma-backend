@@ -50,15 +50,14 @@ exports.User_SignIn = (req, res, next) => {
 }
 
 exports.User_SignUp = (req, res, next) => {
-
+    
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
     // res.status(200).json({
     //     data: "Hi controller"
     // });
 
     try {
-
-        console.log(req.body);
+       
         const { error } = SIGNUP_MODEL.validate(req);
 
         // if (error) return next(new AppError(error.details[0].message, 400));
@@ -108,7 +107,7 @@ exports.User_SignUp = (req, res, next) => {
             }
 
             else if (req.body.user_type == 'Delivery agent') {
-                conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, default_profilepic_customer, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, default_profilepic_customer, otp,0]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
 
