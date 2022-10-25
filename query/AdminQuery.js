@@ -1,6 +1,6 @@
 exports.GET_ADMIN_DETAILS =  "SELECT * FROM login INNER JOIN admin ON login.uid= ? AND login.verify = 1 AND login.uid = admin.uid";
 
-exports.GET_COMPLAINTS =  "SELECT * FROM complaint";
+//exports.GET_COMPLAINTS =  "SELECT * FROM complaint";
 
 // exports.GET_ADMIN_DETAILS = "SELECT * FROM login WHERE uid=? AND verify=1";
 

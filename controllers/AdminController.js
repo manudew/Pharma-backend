@@ -238,27 +238,27 @@ exports.getDeliveryComplaintDetails = (req, res, next) => {
     }
 }
 
-exports.getComplaints = (req, res, next) => {
+// exports.getComplaints = (req, res, next) => {
 
-    try {
-        conn.query(GET_COMPLAINTS, [], async (err, data, feilds) => {
-            console.log(data);
-                      if (!data.length) {
-                res.status(200).send({
-                    result: "No records"
-                })
-            }
-            else {
-                res.header().status(200).send(data);
-            }
-        })
-    }
-    catch (err) {
-        res.status(500).json({
-            error: err
-        })
-    }
-}
+//     try {
+//         conn.query(GET_COMPLAINTS, [], async (err, data, feilds) => {
+//             console.log(data);
+//                       if (!data.length) {
+//                 res.status(200).send({
+//                     result: "No records"
+//                 })
+//             }
+//             else {
+//                 res.header().status(200).send(data);
+//             }
+//         })
+//     }
+//     catch (err) {
+//         res.status(500).json({
+//             error: err
+//         })
+//     }
+// }
 
 exports.updatePanelty = (req, res, next) => {
     const id = req.params.aID;
