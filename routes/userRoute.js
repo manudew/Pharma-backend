@@ -36,5 +36,6 @@ userRoute.post("/updateTelephone",UserController.updateTelephone);
 userRoute.post("/updateEmail",UserController.updateEmail);
 userRoute.post("/updatePassword",UserController.updatePassword);
 userRoute.post("/UploadProfilePhoto",UserController.uploadProfilepic);
-
+userRoute.post("/updateAccountNumber",UserController.updateAccountNumber);
+userRoute.post("/updateAddress",UserController.updateAddress);
 module.exports = userRoute;

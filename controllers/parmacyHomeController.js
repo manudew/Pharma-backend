@@ -2,7 +2,7 @@ const { isEmpty } = require('../utils/is_empty');
 const Joi = require('@hapi/joi');
 const JWT = require('jsonwebtoken');
 const conn = require('../service/db_service');
-const { GET_DATA_PHARMACY, GET_PENDING_ORDER, GET_ONGOING_ORDER,GET_DRUG_DETAILS,SET_STATUS,SET_STATUS_TO_COMPLETE,DELETE_CUSTOMER} = require('../query/pharmacyData');
+const { GET_DATA_PHARMACY, GET_PENDING_ORDER, GET_ONGOING_ORDER,GET_DRUG_DETAILS,SET_STATUS,SET_STATUS_TO_COMPLETE,DELETE_CUSTOMER,GET_PROFILE_DETAILS,UPDATE_PHARMACY_NAME} = require('../query/pharmacyData');
 // const { SIGNUP_MODEL, SIGNIN_MODEL } = require('../models/signUp');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -106,6 +106,35 @@ exports.deleteCustomer = (req, res, next)=>{
   const id = req.params.uid;
   console.log(id);
   conn.query(DELETE_CUSTOMER,Number(id), (err, result)=>{
+     if (err) {
+       console.log(err)}
+       else{
+        res.header().status(200).send({
+          result : true
+        })
+       }
+     });
+}
+
+exports.getProfileData = (req, res, next)=>{
+  const id = req.params.id;
+  conn.query(GET_PROFILE_DETAILS,String(id), (err, result)=>{
+     if (err) {
+       console.log(err)}
+       else{
+         //  res.send(result);
+        console.log(result);
+        res.header().status(200).send(result)
+       }
+     });
+}
+
+exports.updatePharmacyName = (req, res, next)=>{
+  const id = req.params.id;
+  const name =req.body.params.id;
+  console.log(name); 
+  console.log(id);
+  conn.query(UPDATE_PHARMACY_NAME,Number(id),name, (err, result)=>{
      if (err) {
        console.log(err)}
        else{

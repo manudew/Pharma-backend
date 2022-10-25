@@ -12,7 +12,7 @@ const { GET_PHARMACY_MODEL } = require('../models/UserModel');
 const { GET_VEIRIFIED_PHARMACIES } = require("../query/UserQuery");
 const { GET_ORDER_PLACED_PHRMACIES } = require("../query/UserQuery");
 const { UPDATE_USERNAME_MODEL, UPDATE_TELEPHONE_MODEL, UPDATE_EMAIL_MODEL, UPDATE_PASSWORD_MODEL } = require('../models/UserModel');
-const { UPDATE_CUSTOMER_USERNAME, UPDATE_DELIVERYAGENT_USERNAME, UPDATE_ADMIN_USERNAME, UPDATE_PHARMACY_USERNAME, UPDATE_CUSTOMER_TELEPHONE, UPDATE_DELIVERYAGENT_TELEPHONE, UPDATE_PHARMACY_TELEPHONE, UPDATE_ADMIN_TELEPHONE, UPDATE_CUSTOMER_EMAIL, UPDATE_DELIVERYAGENT_EMAIL, UPDATE_PHARMACY_EMAIL, UPDATE_ADMIN_EMAIL, GET_VERIFIED_USER_BY_UID, UPDATE_PASSWORD, UPDATE_ADMIN_PROFILE_PIC, UPDATE_CUSTOMER_PROFILE_PIC, UPDATE_DELIVERYAGENT_PROFILE_PIC, UPDATE_PHARMACY_PROFILE_PIC,SEND_NOTIFICATION } = require("../query/UserQuery");
+const { UPDATE_ADDRESS,UPDATE_ACCOUNT_NUMBER,UPDATE_CUSTOMER_USERNAME, UPDATE_DELIVERYAGENT_USERNAME, UPDATE_ADMIN_USERNAME, UPDATE_PHARMACY_USERNAME, UPDATE_CUSTOMER_TELEPHONE, UPDATE_DELIVERYAGENT_TELEPHONE, UPDATE_PHARMACY_TELEPHONE, UPDATE_ADMIN_TELEPHONE, UPDATE_CUSTOMER_EMAIL, UPDATE_DELIVERYAGENT_EMAIL, UPDATE_PHARMACY_EMAIL, UPDATE_ADMIN_EMAIL, GET_VERIFIED_USER_BY_UID, UPDATE_PASSWORD, UPDATE_ADMIN_PROFILE_PIC, UPDATE_CUSTOMER_PROFILE_PIC, UPDATE_DELIVERYAGENT_PROFILE_PIC, UPDATE_PHARMACY_PROFILE_PIC,SEND_NOTIFICATION } = require("../query/UserQuery");
 const { GET_VERIFIED_USER } = require('../query/signUp');
 const { GET_CUSTOMER_DETAILS } = require('../query/CustomerQuery');
 const { GET_DELIVERY_AGENT_DETAILS } = require("../query/DeliveyagentQuery");
@@ -68,8 +68,10 @@ exports.getOrderPlacedPharmacies = (req, res, next) => {
 }
 
 exports.updateUsername = (req, res, next) => {
+    console.log("Manuka")
+    console.log(req.body);
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
-
+    
     try {
         const { error } = UPDATE_USERNAME_MODEL.validate(req.body);
         if (error) return next(new AppError(error.details[0].message, 400));
@@ -117,7 +119,7 @@ exports.updateUsername = (req, res, next) => {
 
 exports.updateTelephone = (req, res, next) => {
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
-
+    console.log(req.body);
     try {
         const { error } = UPDATE_TELEPHONE_MODEL.validate(req.body);
         if (error) return next(new AppError(error.details[0].message, 400));
@@ -341,6 +343,34 @@ exports.sendSMSNotifications = (receiver,body) => {
     catch (err){
         res.status(500).json({
             error : err
+        })
+    }
+}
+
+exports.updateAccountNumber = (req, res, next) => {
+
+    try {
+        conn.query(UPDATE_ACCOUNT_NUMBER, [[req.body.account_number],[req.body.uid]], async (err, data, feilds) => {
+           
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
+}
+
+exports.updateAddress = (req, res, next) => {
+
+    try {
+        conn.query(UPDATE_ADDRESS, [[req.body.address],[req.body.uid]], async (err, data, feilds) => {
+           
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
         })
     }
 }
