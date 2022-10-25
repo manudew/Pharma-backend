@@ -1,6 +1,6 @@
 
 const conn = require('../service/db_service');
-const { GET_ALL_ORDERS, GET_ORDER, UPLOAD_FEEDBACK} = require('../query/pharmacyData');
+const { GET_ALL_ORDERS, GET_ORDER, UPLOAD_FEEDBACK, GET_NOTIFCATION_DETAILS} = require('../query/pharmacyData');
 const { isEmpty } = require('../utils/is_empty');
 const AppError = require('../utils/appError');
 
@@ -41,6 +41,15 @@ conn.query(GET_ORDER,[pharmacy_id,order_id], (err, result)=>{
   const total = req.body.total;
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
     conn.query(UPLOAD_FEEDBACK, [url,total,order_id], async (err, data, feilds) => {
+
+      conn.query(GET_NOTIFCATION_DETAILS, [order_id], async (err, result, feilds)=>{
+
+        var notificationBody = "You hve a new order from "+result[0].username
+
+        UserController.sendSMSNotifications(result[0].contact_number, notificationBody)
+        //UserController.sendNotifications(req.body.uid,req.body.pharmacy_id,notificationBody,"pharmacy")
+    })
+
         if (err) return next(new AppError(err, 500));
         res.header().status(200).send({
             result: req.body,

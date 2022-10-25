@@ -150,6 +150,7 @@ exports.getOrder = (req, res, next) => {
 
                 UserController.sendSMSNotifications(result[0].cus_contact, notificationBody)
                 UserController.sendNotifications(req.body.uid,result[0].uid,notificationBody,"delivery")
+                UserController.sendNotifications(req.body.uid,result[0].pharmacy_id,notificationBody,"delivery")
             })
            
             if (!data.length) {
