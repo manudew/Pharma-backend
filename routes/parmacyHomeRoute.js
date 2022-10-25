@@ -16,6 +16,8 @@ parmacyHomeRoute.get("/getDrugDetails/:pharmacy_id", parmacyHome_controller.getD
 parmacyHomeRoute.get("/ChangeOngoingViewDetails/:uid", parmacyHome_controller.setDeliveryStatus);
 parmacyHomeRoute.get("/ChangeOngoingViewDetailsNoDelivery/:uid", parmacyHome_controller.setStatus);
 parmacyHomeRoute.get("/RejectPendingOrder/:uid", parmacyHome_controller.deleteCustomer);
+parmacyHomeRoute.get("/GetProfileData/:id", parmacyHome_controller.getProfileData);
+parmacyHomeRoute.get("/ChangePharmacyName/:id", parmacyHome_controller.updatePharmacyName);
 
 
 module.exports = parmacyHomeRoute;

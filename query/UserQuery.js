@@ -43,9 +43,15 @@ exports.UPDATE_ADMIN_PROFILE_PIC = "UPDATE admin SET profile_pic = ? WHERE uid =
 
 exports.SEND_NOTIFICATION = "INSERT INTO notification VALUES (NULL,?,?,?,CURRENT_TIMESTAMP(),?,0)"
 
+
+exports.UPDATE_ACCOUNT_NUMBER = "UPDATE pharmacy SET account_number = ? WHERE uid = ?"
+
+exports.UPDATE_ADDRESS = "UPDATE pharmacy SET address = ? WHERE uid = ?"
+
 exports.GET_NOTIFICATIONS = `SELECT delivery_agent.uid,delivery_agent.profile_pic,notification.notification,notification.status, notification.notification_id, DATE_FORMAT(notification.time_stamp,'%Y %D %M %h:%i:%s') As time_stamp FROM notification JOIN delivery_agent ON delivery_agent.uid = notification.sender WHERE notification.receiver = ? AND notification.status = "delivery" UNION
 SELECT pharmacy.uid,pharmacy.profile_pic,notification.notification,notification.status, notification.notification_id,DATE_FORMAT(notification.time_stamp,'%Y %D %M %h:%i:%s') As time_stamp FROM notification JOIN pharmacy ON pharmacy.uid = notification.sender WHERE notification.receiver = ? AND notification.status = "pharmacy" ORDER BY notification_id DESC`;
 
 exports.SET_VIEWED = 'UPDATE notification SET viewed = 1 WHERE receiver = ?'
 
 exports.CHECK_NOTIFICATION_VIEWED = 'SELECT viewed FROM notification WHERE receiver = ? AND viewed = 0'
+

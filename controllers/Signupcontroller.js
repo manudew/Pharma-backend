@@ -50,15 +50,14 @@ exports.User_SignIn = (req, res, next) => {
 }
 
 exports.User_SignUp = (req, res, next) => {
-
+    
     if (isEmpty(req)) return next(new AppError("form data not found ", 400));
     // res.status(200).json({
     //     data: "Hi controller"
     // });
 
     try {
-
-        console.log(req.body);
+       
         const { error } = SIGNUP_MODEL.validate(req);
 
         // if (error) return next(new AppError(error.details[0].message, 400));
