@@ -14,6 +14,7 @@ adminRoute.post("/GetBestAgents",AdminController.getBestAgents);
 adminRoute.post("/GetGraphData",AdminController.getGraphData);
 
 adminRoute.post("/UpdatePanelty/:aID",AdminController.updatePanelty);
+adminRoute.post("/UpdateWhenClickDismiss/:aID",AdminController.updateWhenClickDismiss);
 adminRoute.delete("/DeleteUser/:aID",AdminController.deleteUser);
 adminRoute.get("/GetComplaintDetails/:id",AdminController.getComplaintDetails);
 adminRoute.get("/GetDeliveryComplaintDetails/:id",AdminController.getDeliveryComplaintDetails);

@@ -21,3 +21,8 @@ exports.GET_ALL_PHARMACIES = "SELECT * FROM pharmacy WHERE uid NOT IN (SELECT ph
 exports.REGISTER_IN_NEW_PHARMACY = "INSERT INTO register VALUES (?, ?)"
 
 exports.GET_ORDER_CUSTOMER = "SELECT customer.contact_number AS cus_contact,customer.uid, delivery_agent.contact_number AS del_contact FROM orders JOIN customer ON customer.uid = orders.customer_id JOIN delivery_agent ON delivery_agent.uid=orders.delivery_agent_id WHERE order_id = ?"
+
+exports.GET_AGENT_ORDERS = "SELECT * FROM orders  WHERE delivery_agent_id = ?"
+
+
+exports.GET_AGENT_ORDERS = "SELECT COUNT(order_id) as Count,MONTHNAME(time_stamp) as 'Month', YEAR(time_stamp) as Year FROM orders WHERE delivery_agent_id = ? GROUP BY YEAR(time_stamp),MONTH(time_stamp)";

@@ -5,7 +5,7 @@ const conn = require('../service/db_service');
 const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { GET_COMPLAINTS, GET_ADMIN_DETAILS, GET_PHARMACY_COUNT, GET_CUSTOMER_COUNT, GET_DELIVERY_AGENT_COUNT, GET_MONTHLY_ORDER_COUNT, GET_BEST_PHARMACIES, GET_BEST_AGENTS, GET_GRAPH_DATA} = require("../query/AdminQuery")
+const { GET_COMPLAINTS, GET_ADMIN_DETAILS, GET_PHARMACY_COUNT, GET_CUSTOMER_COUNT, GET_DELIVERY_AGENT_COUNT, GET_MONTHLY_ORDER_COUNT, GET_BEST_PHARMACIES, GET_BEST_AGENTS, GET_GRAPH_DATA, UPDATE_WHEN_CLICK_DISMISS} = require("../query/AdminQuery")
 const { GET_ALL_COMPLAINTS } = require("../query/AdminQuery");
 const { GET_ALL_COMPLAINT_DETAILS} = require("../query/AdminQuery");
 const { UPDATE_PANELTY} = require("../query/AdminQuery");
@@ -238,27 +238,27 @@ exports.getDeliveryComplaintDetails = (req, res, next) => {
     }
 }
 
-exports.getComplaints = (req, res, next) => {
+// exports.getComplaints = (req, res, next) => {
 
-    try {
-        conn.query(GET_COMPLAINTS, [], async (err, data, feilds) => {
-            console.log(data);
-                      if (!data.length) {
-                res.status(200).send({
-                    result: "No records"
-                })
-            }
-            else {
-                res.header().status(200).send(data);
-            }
-        })
-    }
-    catch (err) {
-        res.status(500).json({
-            error: err
-        })
-    }
-}
+//     try {
+//         conn.query(GET_COMPLAINTS, [], async (err, data, feilds) => {
+//             console.log(data);
+//                       if (!data.length) {
+//                 res.status(200).send({
+//                     result: "No records"
+//                 })
+//             }
+//             else {
+//                 res.header().status(200).send(data);
+//             }
+//         })
+//     }
+//     catch (err) {
+//         res.status(500).json({
+//             error: err
+//         })
+//     }
+// }
 
 exports.updatePanelty = (req, res, next) => {
     const id = req.params.aID;
@@ -283,6 +283,31 @@ exports.updatePanelty = (req, res, next) => {
         })
     }
 }
+
+exports.updateWhenClickDismiss = (req, res, next) => {
+    const id = req.params.aID;
+    console.log(id);
+    try {
+        conn.query(UPDATE_WHEN_CLICK_DISMISS, [id, id], async (err, data, feilds) => {
+            console.log(data);
+            
+            if (!data.length) {
+                res.status(200).send({
+                    result: "No records"
+                })
+            }
+            else {
+                res.header().status(200).send(data);
+            }
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
+}
+
 
 exports.getAdminDetails = (req, res, next) => {
 

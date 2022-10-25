@@ -12,6 +12,8 @@ deliveryAgentRoute.post("/GetRegisteredPharmacies",DeliveryAgentController.getRe
 deliveryAgentRoute.post("/UnregisterFromPharmacy",DeliveryAgentController.UnregisterFromPharmacy);
 deliveryAgentRoute.post("/GetPharmaciesForRegister",DeliveryAgentController.GetPharmaciesForRegister);
 deliveryAgentRoute.post("/RegisterInPharmacy",DeliveryAgentController.RegisterInPharmacy);
+deliveryAgentRoute.post("/GetAgentOrders/:id",DeliveryAgentController.getAgentOrders);
+
 
 
 module.exports = deliveryAgentRoute;
