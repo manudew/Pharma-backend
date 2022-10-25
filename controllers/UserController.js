@@ -12,7 +12,7 @@ const { GET_PHARMACY_MODEL } = require('../models/UserModel');
 const { GET_VEIRIFIED_PHARMACIES, GET_VERIFIED_DELIVERYAGENTS } = require("../query/UserQuery");
 const { GET_ORDER_PLACED_PHRMACIES } = require("../query/UserQuery");
 const { UPDATE_USERNAME_MODEL, UPDATE_TELEPHONE_MODEL, UPDATE_EMAIL_MODEL, UPDATE_PASSWORD_MODEL } = require('../models/UserModel');
-const { UPDATE_CUSTOMER_USERNAME, UPDATE_DELIVERYAGENT_USERNAME, UPDATE_ADMIN_USERNAME, UPDATE_PHARMACY_USERNAME, UPDATE_CUSTOMER_TELEPHONE, UPDATE_DELIVERYAGENT_TELEPHONE, UPDATE_PHARMACY_TELEPHONE, UPDATE_ADMIN_TELEPHONE, UPDATE_CUSTOMER_EMAIL, UPDATE_DELIVERYAGENT_EMAIL, UPDATE_PHARMACY_EMAIL, UPDATE_ADMIN_EMAIL, GET_VERIFIED_USER_BY_UID, UPDATE_PASSWORD, UPDATE_ADMIN_PROFILE_PIC, UPDATE_CUSTOMER_PROFILE_PIC, UPDATE_DELIVERYAGENT_PROFILE_PIC, UPDATE_PHARMACY_PROFILE_PIC,SEND_NOTIFICATION } = require("../query/UserQuery");
+const { UPDATE_CUSTOMER_USERNAME, UPDATE_DELIVERYAGENT_USERNAME, UPDATE_ADMIN_USERNAME, UPDATE_PHARMACY_USERNAME, UPDATE_CUSTOMER_TELEPHONE, UPDATE_DELIVERYAGENT_TELEPHONE, UPDATE_PHARMACY_TELEPHONE, UPDATE_ADMIN_TELEPHONE, UPDATE_CUSTOMER_EMAIL, UPDATE_DELIVERYAGENT_EMAIL, UPDATE_PHARMACY_EMAIL, UPDATE_ADMIN_EMAIL, GET_VERIFIED_USER_BY_UID, UPDATE_PASSWORD, UPDATE_ADMIN_PROFILE_PIC, UPDATE_CUSTOMER_PROFILE_PIC, UPDATE_DELIVERYAGENT_PROFILE_PIC, UPDATE_PHARMACY_PROFILE_PIC,SEND_NOTIFICATION,GET_NOTIFICATIONS,SET_VIEWED,CHECK_NOTIFICATION_VIEWED} = require("../query/UserQuery");
 const { GET_VERIFIED_USER } = require('../query/signUp');
 const { GET_CUSTOMER_DETAILS } = require('../query/CustomerQuery');
 const { GET_DELIVERY_AGENT_DETAILS} = require("../query/DeliveyagentQuery");
@@ -366,3 +366,47 @@ exports.sendSMSNotifications = (receiver,body) => {
         })
     }
 }
+
+exports.getNotifications = (req,res,next) => {
+    try{
+        conn.query(GET_NOTIFICATIONS,[[req.body.uid],[req.body.uid]], async (err, data, feilds) => {
+            if (err) return next(new AppError(err, 500));
+            res.header().status(200).send(data);
+        })     
+    }
+    catch (err){
+        res.status(500).json({
+            error : err
+        })
+    }
+}
+
+exports.setNotificationViewed = (req,res,next) => {
+    try{
+        conn.query(SET_VIEWED,[req.body.uid], async (err, data, feilds) => {
+            if (err) return next(new AppError(err, 500));
+            res.header().status(200).send(data);
+        })     
+    }
+    catch (err){
+        res.status(500).json({
+            error : err
+        })
+    }
+}
+
+exports.checkNotificationViewed = (req,res,next) => {
+    try{
+        conn.query(CHECK_NOTIFICATION_VIEWED,[req.body.uid], async (err, data, feilds) => {
+            if(data.length){
+                res.header().status(200).send({result : true});
+            }
+        })     
+    }
+    catch (err){
+        res.status(500).json({
+            error : err
+        })
+    }
+}
+

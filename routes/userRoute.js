@@ -37,5 +37,8 @@ userRoute.post("/updateTelephone",UserController.updateTelephone);
 userRoute.post("/updateEmail",UserController.updateEmail);
 userRoute.post("/updatePassword",UserController.updatePassword);
 userRoute.post("/UploadProfilePhoto",UserController.uploadProfilepic);
+userRoute.post("/getNotifications",UserController.getNotifications);
+userRoute.post("/checkNotificationViewed",UserController.checkNotificationViewed);
+userRoute.post("/setNotificationViewed",UserController.setNotificationViewed);
 
 module.exports = userRoute;
