@@ -10,6 +10,7 @@ const deliveryAgentRoute = require('./routes/deliveryAgentRoute');
 const stripeRoute = require('./routes/stripeRoute');
 const fileUpladRoute = require('./routes/fileUpload');
 const pharmacyInventoryRoute = require('./routes/parmacyInventoryRoute');
+const adminRoute = require('./routes/adminRoute');
 
 
 const app = express();
@@ -31,10 +32,7 @@ app.use("/OngoingViewDetailsNoDelivery",parmacyHomeRoute);
 app.use("/RejectOrder",parmacyHomeRoute);
 app.use("/UploadFile",fileUpladRoute);
 app.use("/PharmacyInventory",pharmacyInventoryRoute);
-
-
-
-
+app.use("/admin",adminRoute);
 
 const PORT = 3000;
 
