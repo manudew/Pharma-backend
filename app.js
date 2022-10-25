@@ -13,6 +13,7 @@ const bodyparser = require('body-parser');
 
 const signupRoute = require('./routes/signupRoute');
 const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute");
 const customerRoute = require("./routes/customerRoute");
 const parmacyHomeRoute = require('./routes/parmacyHomeRoute');
 const deliveryAgentRoute = require('./routes/deliveryAgentRoute');
@@ -28,6 +29,7 @@ app.use("/Customer",customerRoute);
 app.use("/PharmacyHome",parmacyHomeRoute);
 app.use("/DeliveryAgent",deliveryAgentRoute);
 app.use("/PharmacyOrder",parmacyOrderRoute);
+app.use("/admin",adminRoute);
 
 
 
