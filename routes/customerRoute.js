@@ -33,6 +33,7 @@ customerRoute.post("/GetDetails",CustomerController.getCustomerDetails);
 customerRoute.post("/makeOrder",CustomerController.makeOrder);
 customerRoute.post("/getOrdersByUid",CustomerController.getOrdersByUid);
 customerRoute.post("/orderAcceptance",CustomerController.orderAcceptance);
+customerRoute.post("/ratings",CustomerController.ratings)
 
 
 module.exports = customerRoute;
