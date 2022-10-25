@@ -108,7 +108,7 @@ exports.User_SignUp = (req, res, next) => {
             }
 
             else if (req.body.user_type == 'Delivery agent') {
-                conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, default_profilepic_customer, otp]], (err, data, feilds) => {
+                conn.query(REGISTER_DELIVERY_AGENT, [[req.body.username, req.body.email, hashedValue, req.body.contact_number, default_profilepic_customer, otp,0]], (err, data, feilds) => {
                     if (err) return next(new AppError(err, 500));
                     UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
 
