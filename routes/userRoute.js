@@ -30,6 +30,7 @@ const path = require('path');
 const UserController =  require('../controllers/UserController');
 
 userRoute.post("/GetPharmacies",UserController.getPharmacies);
+userRoute.post("/GetDeliveryAgents",UserController.getDeliveryAgents);
 userRoute.post("/GetOrderPlacedPharmacies",UserController.getOrderPlacedPharmacies);
 userRoute.post("/updateUsername",UserController.updateUsername);
 userRoute.post("/updateTelephone",UserController.updateTelephone);
@@ -38,4 +39,9 @@ userRoute.post("/updatePassword",UserController.updatePassword);
 userRoute.post("/UploadProfilePhoto",UserController.uploadProfilepic);
 userRoute.post("/updateAccountNumber",UserController.updateAccountNumber);
 userRoute.post("/updateAddress",UserController.updateAddress);
+userRoute.post("/getNotifications",UserController.getNotifications);
+userRoute.post("/checkNotificationViewed",UserController.checkNotificationViewed);
+userRoute.post("/setNotificationViewed",UserController.setNotificationViewed);
+
+
 module.exports = userRoute;
