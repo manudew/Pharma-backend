@@ -284,6 +284,30 @@ exports.updatePanelty = (req, res, next) => {
     }
 }
 
+exports.dissmissComplaint = (req, res, next) => {
+    const id = req.params.id;
+    //console.log(id);
+    try {
+        conn.query(UPDATE_WHEN_CLICK_DISMISS, [id], async (err, data, feilds) => {
+            console.log(data);
+            
+            if (!data.length) {
+                res.status(200).send({
+                    result: "No records"
+                })
+            }
+            else {
+                res.header().status(200).send(data);
+            }
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
+}
+
 exports.updateWhenClickDismiss = (req, res, next) => {
     const id = req.params.aID;
     console.log(id);

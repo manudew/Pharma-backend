@@ -18,5 +18,7 @@ adminRoute.post("/UpdateWhenClickDismiss/:aID",AdminController.updateWhenClickDi
 adminRoute.delete("/DeleteUser/:aID",AdminController.deleteUser);
 adminRoute.get("/GetComplaintDetails/:id",AdminController.getComplaintDetails);
 adminRoute.get("/GetDeliveryComplaintDetails/:id",AdminController.getDeliveryComplaintDetails);
+adminRoute.get("/DissmissComplaint/:id",AdminController.dissmissComplaint);
+
 
 module.exports = adminRoute;

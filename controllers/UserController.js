@@ -380,6 +380,9 @@ exports.updateAccountNumber = (req, res, next) => {
     catch (err) {
         res.status(500).json({
             error: err
+        })
+    }
+}
 
 exports.getNotifications = (req,res,next) => {
     try{
