@@ -17,8 +17,11 @@ const { GET_ORDER_CUSTOMER } = require("../query/DeliveryAgentQuery");
 const { UNREGISTER_FROM_PHARMACIES } = require("../query/DeliveryAgentQuery");
 const { GET_ALL_PHARMACIES } = require("../query/DeliveryAgentQuery");
 const { REGISTER_IN_NEW_PHARMACY } = require("../query/DeliveryAgentQuery");
+const { GET_AGENT_ORDERS } = require("../query/DeliveryAgentQuery");
+
 const UserController = require('../controllers/UserController');
 const { result } = require('@hapi/joi/lib/base');
+const { param } = require('../routes/parmacyOrderRoute');
 
 
 
@@ -47,6 +50,30 @@ exports.getConfirmedOrdersDetails = (req, res, next) => {
 exports.getCompletedOrdersDetails = (req, res, next) => {
     try {
         conn.query(GET_COMPLETED_ORDERS_DETAILS, [req.body.uid], async (err, data, feilds) => {
+            console.log(data);
+            
+            if (!data.length) {
+                res.status(200).send({
+                    result: "No records"
+                })
+            }
+            else {
+                res.header().status(200).send(data);
+            }
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
+}
+
+
+
+exports.getAgentOrders = (req, res, next) => {
+    try {
+        conn.query(GET_AGENT_ORDERS, [req.params.id], async (err, data, feilds) => {
             console.log(data);
             
             if (!data.length) {
@@ -150,6 +177,7 @@ exports.getOrder = (req, res, next) => {
 
                 UserController.sendSMSNotifications(result[0].cus_contact, notificationBody)
                 UserController.sendNotifications(req.body.uid,result[0].uid,notificationBody,"delivery")
+                UserController.sendNotifications(req.body.uid,result[0].pharmacy_id,notificationBody,"delivery")
             })
            
             if (!data.length) {

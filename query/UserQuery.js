@@ -1,6 +1,9 @@
 exports.GET_VEIRIFIED_PHARMACIES = "SELECT * FROM login INNER JOIN pharmacy ON  login.uid = pharmacy.uid AND login.verify =1 AND login.user_type = 'pharmacy' ";
 
+exports.GET_VERIFIED_DELIVERYAGENTS = "SELECT * FROM login INNER JOIN delivery_agent ON  login.uid = delivery_agent.uid AND login.verify =1 AND login.user_type = 'delivery_agent' ";
+
 exports.GET_ORDER_PLACED_PHRMACIES = "SELECT DISTINCT pharmacy.uid,pharmacy.username,pharmacy.address, pharmacy.open_time, pharmacy.close_time, pharmacy.rating FROM pharmacy JOIN orders ON  pharmacy.uid = orders.pharmacy_id JOIN register ON pharmacy.uid = register.pharmacy_id WHERE (orders.status='delivery' AND register.uid = ?)";
+
 
 exports.GET_VERIFIED_USER_BY_UID = "SELECT * FROM login WHERE uid =?";
 
@@ -40,9 +43,15 @@ exports.UPDATE_ADMIN_PROFILE_PIC = "UPDATE admin SET profile_pic = ? WHERE uid =
 
 exports.SEND_NOTIFICATION = "INSERT INTO notification VALUES (NULL,?,?,?,CURRENT_TIMESTAMP(),?,0)"
 
+
+exports.UPDATE_ACCOUNT_NUMBER = "UPDATE pharmacy SET account_number = ? WHERE uid = ?"
+
+exports.UPDATE_ADDRESS = "UPDATE pharmacy SET address = ? WHERE uid = ?"
+
 exports.GET_NOTIFICATIONS = `SELECT delivery_agent.uid,delivery_agent.profile_pic,notification.notification,notification.status, notification.notification_id, DATE_FORMAT(notification.time_stamp,'%Y %D %M %h:%i:%s') As time_stamp FROM notification JOIN delivery_agent ON delivery_agent.uid = notification.sender WHERE notification.receiver = ? AND notification.status = "delivery" UNION
 SELECT pharmacy.uid,pharmacy.profile_pic,notification.notification,notification.status, notification.notification_id,DATE_FORMAT(notification.time_stamp,'%Y %D %M %h:%i:%s') As time_stamp FROM notification JOIN pharmacy ON pharmacy.uid = notification.sender WHERE notification.receiver = ? AND notification.status = "pharmacy" ORDER BY notification_id DESC`;
 
 exports.SET_VIEWED = 'UPDATE notification SET viewed = 1 WHERE receiver = ?'
 
 exports.CHECK_NOTIFICATION_VIEWED = 'SELECT viewed FROM notification WHERE receiver = ? AND viewed = 0'
+
