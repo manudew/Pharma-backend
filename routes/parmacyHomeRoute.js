@@ -8,7 +8,7 @@ const parmacyHome_controller = require('../controllers/parmacyHomeController');
 parmacyHomeRoute.get("/:pharmacy_id", parmacyHome_controller.PendingOrder);
 parmacyHomeRoute.get("/OngoingViewDetailsNoDelivery/:id", parmacyHome_controller.getOrderDetails);
 parmacyHomeRoute.get("/OngoingViewDetails/:id", parmacyHome_controller.getOrderDetails);
-parmacyHomeRoute.get("/PendingViewDetails/:id", parmacyHome_controller.getOrderDetails);
+parmacyHomeRoute.get("/PendingViewDetails/:id", parmacyHome_controller.getPendingDetails);
 parmacyHomeRoute.get("/CompletedViewDetails/:id", parmacyHome_controller.getOrderDetails);
 parmacyHomeRoute.get("/CompletedViewDetailsNoDelivery/:id", parmacyHome_controller.getOrderDetails);
 parmacyHomeRoute.get("/OngoingViewDetailsSetDelivery/:id", parmacyHome_controller.getOrderDetails);

@@ -2,7 +2,7 @@ const { isEmpty } = require('../utils/is_empty');
 const Joi = require('@hapi/joi');
 const JWT = require('jsonwebtoken');
 const conn = require('../service/db_service');
-const { GET_DATA_PHARMACY, GET_PENDING_ORDER, GET_ONGOING_ORDER,GET_DRUG_DETAILS,SET_STATUS,SET_STATUS_TO_COMPLETE,DELETE_CUSTOMER,GET_PROFILE_DETAILS,UPDATE_PHARMACY_NAME} = require('../query/pharmacyData');
+const { GET_DATA_PHARMACY, GET_PENDING_ORDER, GET_ONGOING_ORDER,GET_DRUG_DETAILS,SET_STATUS,SET_STATUS_TO_COMPLETE,DELETE_CUSTOMER,GET_PROFILE_DETAILS,UPDATE_PHARMACY_NAME, GET_PENDING_ORDERS} = require('../query/pharmacyData');
 // const { SIGNUP_MODEL, SIGNIN_MODEL } = require('../models/signUp');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -49,6 +49,19 @@ exports.PendingOrder = (req, res, next)=>{
 exports.getOrderDetails = (req, res, next)=>{
   const id = req.params.id;
   conn.query(GET_ONGOING_ORDER,Number(id), (err, result)=>{
+     if (err) {
+       console.log(err)}
+       else{
+         //  res.send(result);
+        console.log(result);
+        res.header().status(200).send(result)
+       }
+     });
+}
+
+exports.getPendingDetails = (req, res, next)=>{
+  const id = req.params.id;
+  conn.query(GET_PENDING_ORDERS,Number(id), (err, result)=>{
      if (err) {
        console.log(err)}
        else{

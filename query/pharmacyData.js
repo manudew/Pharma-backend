@@ -5,6 +5,9 @@ exports.UPDATE_PHARMACY_NAME ="UPDATE pharmacy SET username = name WHERE uid =?;
 
 exports.GET_ALL_ORDERS = "SELECT * FROM  orders JOIN customer ON orders.customer_id = customer.uid WHERE pharmacy_id =?";
 exports.GET_ONGOING_ORDER = "SELECT orders.order_id,orders.time_stamp, orders.status,customer.username as cname,customer.contact_number as customertelno,orders.prescription_image,orders.delivery_need,orders.feedback_report,orders.payment,orders.customer_approval,orders.delivery_fee,orders.address,delivery_agent.contact_number as deliverytelno,delivery_agent.username as deliveryname,delivery_agent.profile_pic FROM orders JOIN customer ON orders.customer_id = customer.uid JOIN delivery_agent ON orders.delivery_agent_id = delivery_agent.uid WHERE orders.order_id=?";
+
+exports.GET_PENDING_ORDERS = "SELECT orders.order_id,orders.time_stamp, orders.status,customer.username as cname,customer.contact_number as customertelno,orders.prescription_image,orders.delivery_need,orders.feedback_report,orders.payment,orders.customer_approval,orders.delivery_fee,orders.address FROM orders JOIN customer ON orders.customer_id = customer.uid WHERE orders.order_id=?";
+
 exports.GET_DRUG_DETAILS = "SELECT * FROM inventory  WHERE pharmacy_id =?";
 exports.SET_STATUS = "UPDATE orders SET status = 'delivery' WHERE order_id =?";
 exports.SET_STATUS_TO_COMPLETE = "UPDATE orders SET status = 'completed' WHERE order_id =?";
