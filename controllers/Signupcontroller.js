@@ -97,7 +97,7 @@ exports.User_SignUp = (req, res, next) => {
                 conn.query(REGISTER_PHARMACY, [[req.body.username, req.body.email, req.body.address, hashedValue, req.body.telephone, req.body.openTime, req.body.closeTime, default_profilepic_customer, req.body.regNo, req.body.bName, req.body.accNo, null, null, 1, otp]], (err, data, feilds) => {
 
                     if (err) return next(new AppError(err, 500));
-                    UserController.sendSMSNotifications(req.body.contact_number,`Thank you for signing up. Here is your verification OTP: ${otp}`);
+                    UserController.sendSMSNotifications(req.body.telephone,`Thank you for signing up. Here is your verification OTP: ${otp}`);
 
                     res.status(200).json({
                         success: true,
