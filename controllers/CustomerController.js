@@ -65,13 +65,11 @@ exports.makeOrder = (req,res,next) => {
 }
 
 exports.getOrdersByUid = (req,res,next) => {
-    console.log(req.body);
+    
     try{
-        conn.query(GET_ORDERS_BY_UID, [req.body.uid], async (err, data, feilds) => {
-            console.log(data);
-            if (data.length == true) {
+        conn.query(GET_ORDERS_BY_UID, [req.body.uid], async (err, data, feilds) => { 
                 res.header().status(200).send(data);
-            }
+  
         })
 
     }

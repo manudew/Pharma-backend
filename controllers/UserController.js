@@ -374,10 +374,14 @@ exports.setNotificationViewed = (req,res,next) => {
 }
 
 exports.checkNotificationViewed = (req,res,next) => {
+
     try{
         conn.query(CHECK_NOTIFICATION_VIEWED,[req.body.uid], async (err, data, feilds) => {
             if(data.length){
                 res.header().status(200).send({result : true});
+            }
+            else{
+                res.header().status(200).send({result : false});
             }
         })     
     }
