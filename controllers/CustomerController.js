@@ -6,7 +6,7 @@ const AppError = require('../utils/appError');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { GET_CUSTOMER_MODEL } = require("../models/CustomerModel");
-const { GET_CUSTOMER_DETAILS,RATE_DELIVERY_AGENT,RATE_PHARMACY, INSERT_ORDER,GET_ORDERS_BY_UID,ACCEPT_ORDER,REJECT_ORDER, GET_USER_DETAILS, GET_USER_ACCEPTENCE_DETAILS} = require("../query/CustomerQuery");
+const { STATUS_UPDATE_BY_CUSTOMER,GET_CUSTOMER_DETAILS,RATE_DELIVERY_AGENT,RATE_PHARMACY, INSERT_ORDER,GET_ORDERS_BY_UID,ACCEPT_ORDER,REJECT_ORDER, GET_USER_DETAILS, GET_USER_ACCEPTENCE_DETAILS} = require("../query/CustomerQuery");
 const { default: axios } = require('axios');
 const UserController = require("../controllers/UserController");
 
@@ -87,12 +87,7 @@ exports.getOrdersByUid = (req,res,next) => {
     try{
         conn.query(GET_ORDERS_BY_UID, [req.body.uid], async (err, data, feilds) => {
             console.log(data);
-            if (data.length == false) {
-                res.status(200).send({
-                    result: "No records"
-                })
-            }
-            else{
+            if (data.length == true) {
                 res.header().status(200).send(data);
             }
         })
@@ -111,12 +106,16 @@ exports.orderAcceptance = (req,res,next) => {
         if(req.body.status == true){
             conn.query(ACCEPT_ORDER, [req.body.order_id], async (err, data, feilds) => {
 
+                conn.query(STATUS_UPDATE_BY_CUSTOMER , [req.body.order_id], async (err, data, feilds) => {})
+
+
                 conn.query(GET_USER_ACCEPTENCE_DETAILS, [req.body.order_id], async (err, result, feilds)=>{
 
                     var notificationBody = "Order id("+req.body.order_id+") has been approved by customer."
 
                     UserController.sendNotifications(result[0].customer_id, result[0].pharmacy_id,notificationBody,"pharmacy")
                 })
+
 
                 res.header().status(200).send({
                     result: true
