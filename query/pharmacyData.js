@@ -1,5 +1,5 @@
 exports.GET_DATA_PHARMACY = "SELECT * FROM pharmacy WHERE uid =?";
-exports.GET_PENDING_ORDER = "SELECT * FROM orders   WHERE pharmacy_id =?";
+exports.GET_PENDING_ORDER = "SELECT * FROM orders   WHERE pharmacy_id =? ORDER BY order_id DESC";
 exports.GET_PROFILE_DETAILS ="SELECT * FROM pharmacy WHERE uid=?";
 exports.UPDATE_PHARMACY_NAME ="UPDATE pharmacy SET username = name WHERE uid =?;"
 
