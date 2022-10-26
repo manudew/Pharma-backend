@@ -3,7 +3,7 @@ const conn = require('../service/db_service');
 const { GET_ALL_ORDERS, GET_ORDER, UPLOAD_FEEDBACK, GET_NOTIFCATION_DETAILS} = require('../query/pharmacyData');
 const { isEmpty } = require('../utils/is_empty');
 const AppError = require('../utils/appError');
-
+const UserController = require("../controllers/UserController")
 
 
 
@@ -44,7 +44,7 @@ conn.query(GET_ORDER,[pharmacy_id,order_id], (err, result)=>{
 
       conn.query(GET_NOTIFCATION_DETAILS, [order_id], async (err, result, feilds)=>{
 
-        var notificationBody = "You hve a new order from "+result[0].username
+        var notificationBody = "You have received feedback report from "+ order_id + ".Please check the ongoing orders."
 
         UserController.sendSMSNotifications(result[0].contact_number, notificationBody)
         //UserController.sendNotifications(req.body.uid,req.body.pharmacy_id,notificationBody,"pharmacy")
