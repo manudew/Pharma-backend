@@ -43,7 +43,7 @@ exports.makeOrder = (req,res,next) => {
         if(req.body.is_prescription == "true"){
             conn.query(INSERT_ORDER,[[req.body.uid],[req.body.pharmacy_id],1,[req.body.address],[req.body.prescription],"",[req.body.delivery]],async  (err, data, feilds) => {
 
-                conn.query(GET_USER_DETAILS, [req.body.uid, req.body.pharmacy_id], async (err, result, feilds)=>{
+                conn.query(GET_USER_DETAILS, [[req.body.uid], [req.body.pharmacy_id]], async (err, result, feilds)=>{
 
                     var notificationBody = "You hve a new order from "+result[0].username
 
@@ -59,7 +59,7 @@ exports.makeOrder = (req,res,next) => {
         else{
             conn.query(INSERT_ORDER,[[req.body.uid],[req.body.pharmacy_id],0,[req.body.address],[req.body.prescription],"",[req.body.delivery]],async  (err, data, feilds) => {
 
-                conn.query(GET_USER_DETAILS, [req.body.uid, req.body.pharmacy_id], async (err, result, feilds)=>{
+                conn.query(GET_USER_DETAILS, [[req.body.uid], [req.body.pharmacy_id]], async (err, result, feilds)=>{
 
                     var notificationBody = "You hve a new order from "+result[0].username
 
